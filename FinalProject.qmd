@@ -1,0 +1,127 @@
+---
+tiitle: "Air Pollution Across the Globe"
+author: "Sneha Arya, Greer Moran, and Gabrielle Smeltzer"
+date: "April 24, 2025"
+date-modified: now
+format:
+  pdf:
+    toc: false
+    number-sections: false
+    number-depth: 5
+    fig-align: center
+    cap-location: top
+    geometry:
+      - top=1in
+      - left=1in
+      - right=1in
+      - bottom=1in
+    colorlinks: true
+bibliography: references.bib
+nocite: |
+  @*
+csl: MLA9.csl
+execute:
+  echo: false
+  warning: false
+---
+
+
+## Research Question 1
+How does pollutant air quality index values (e.g. Carbon Dioxide, Ozone, Nitrogen Dioxide, and Particle Matter) impact the overall air quality index, which are most contributing to poor air quality index?
+
+## Plan
+
+1. Load/get needed packages in an R Chunk
+2. Read csv
+3. Use {dplyr} package to use rename() to replace column names
+4. Get linear regression model using lm() and summary()
+5. Go to Dr.Hatfield and ask how to clean summary() and use kableExtra
+
+```{r}
+#| label: packages-loaded
+
+# Load needed packages ---
+## Must determine which are used in our code so that it is executed
+
+
+library(tidyverse)
+library(rvest)
+library(googlesheets4)
+library(knitr)
+library(dcData)
+library(tinytex)
+```
+
+```{r}
+#| label: Data Wrangling Code for Global Air Pollution
+#| lst-label: Global Air Pollution, Data Wrangling
+#| lst-cap: "Rename Needed Columns"
+
+
+# Wrangle Air Pollution Data ---
+
+## Get Correct Column Names ---
+### Get Specific Data Frame of Correct Column Names
+
+library(dplyr)
+library(tidyverse)
+globalData <- read.csv("/Users/greermoran/Downloads/globalairpollutiondataset.csv")
+
+cleanAQIdata <- globalData %>%
+  rename(c(
+    AQI = "AQI.Value",
+    CO = "CO.AQI.Value",
+    Ozone = "Ozone.AQI.Value",
+    NO2 = "NO2.AQI.Value",
+    PM = "PM2.5.AQI.Value"
+    )
+    )
+
+aqiModel <- lm(AQI ~ CO + Ozone + NO2 + PM, data = cleanAQIdata)
+aqiSummary <- summary(aqiModel)
+aqiSummary
+
+# Create Table Summary Visualization ---
+
+aqiDF <- as.data.frame(aqiSummary$coefficients) ## create data frame
+aqiDF$Pollutant <- rownames(aqiDF)
+aqiDF <- aqiDF[, c("Pollutant", "Estimate", "Std. Error", "t value", "Pr(>|t|)")]
+colnames(aqiDF) <- c("Pollutant", "Est. Slope", "Std. Error", "t value", "p-value")
+rownames(aqiDF) <- NULL
+
+
+library(knitr)
+library(kableExtra)
+kable(
+  aqiDF,
+  caption = "Linear Regression Summary for Pollutants impact on AQI",
+  digits = 5
+  ) %>%
+  kable_styling(
+    position = "center"
+  )
+aqiDF
+
+library(ggplot2)
+# 
+ggplot(
+  data = aqiDF, 
+  mapping = aes(
+    x = reorder(Pollutant, `Est. Slope`), 
+    y = `Est. Slope`
+    )
+  ) +
+  geom_point(
+    size = 3, 
+    color = "steelblue"
+    ) +
+  labs(
+    title = "Impact of Pollutants on Air Quality Index",
+    x = "Pollutant",
+    y = "Estimated Slope"
+  ) +
+  theme_minimal()
+
+```
+
+# Analyze AQI
