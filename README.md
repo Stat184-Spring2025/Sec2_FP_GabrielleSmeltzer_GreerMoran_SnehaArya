@@ -2,8 +2,6 @@
 
 Write a 1-2 sentences that quickly and clearly convey what your repo is for.
 
-This is an example addition for showing using git.
-
 
 ## Overview
 
