@@ -144,6 +144,8 @@ View(populationPollution)
 
 ##Filter out all cities without population
 
+tidypopPoll <- populationPollution %>%
 
+filter(if_all(Population..2020., ~ !is.na(.)))
 ```
 
