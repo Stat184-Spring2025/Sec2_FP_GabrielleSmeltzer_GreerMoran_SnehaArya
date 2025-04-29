@@ -125,3 +125,25 @@ ggplot(
 ```
 
 # Analyze AQI
+
+```{r}
+library(dplyr)
+library(tidyverse)
+## Create space for population and pollution data
+pollutionData <- read.csv("statproject.csv")
+populationData <-read.csv("statproject1.csv")
+
+## Wrangle the data for calling and combination
+## Combine the data for population
+populationPollution <-left_join(
+  x = pollutionData,
+  y = populationData,
+  by = join_by(Country == 'Country..or.dependency.')
+)
+View(populationPollution)
+
+##Filter out all cities without population
+
+
+```
+
