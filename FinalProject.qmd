@@ -129,6 +129,9 @@ ggplot(
 ```{r}
 library(dplyr)
 library(tidyverse)
+library(ggplot2)
+
+
 ## Create space for population and pollution data
 pollutionData <- read.csv("statproject.csv")
 populationData <-read.csv("statproject1.csv")
@@ -140,12 +143,90 @@ populationPollution <-left_join(
   y = populationData,
   by = join_by(Country == 'Country..or.dependency.')
 )
-View(populationPollution)
+
 
 ##Filter out all cities without population
 
 tidypopPoll <- populationPollution %>%
 
 filter(if_all(Population..2020., ~ !is.na(.)))
+
+##Filter our data to a country from each continent, excluding Antarctica
+
+filteredCountry <- c("Australia", "Brazil", "Canada", "China","France", "South Africa"  )
+specificCountry <- tidypopPoll %>%  
+  filter(Country %in% filteredCountry)
+
+
+##Create Comparison Visuals
+
+ggplot(specificCountry) +
+  aes(x = Country, fill = AQI.Category) +
+  geom_bar() +
+  scale_fill_brewer(palette = "RdPu", direction = 1) +
+  labs(
+    x = "Country",
+    y = "Category Count",
+    title = "AQI Category by Country",
+    caption = "A count of each AQI category by country.",
+    fill = "AQI Categories"
+  ) +
+  theme_linedraw() +
+  theme(
+    plot.title = element_text(size = 15L,
+    face = "bold",
+    hjust = 0.5),
+    plot.caption = element_text(hjust = 0.5)
+  )
+ 
+specificCountry %>%
+ filter(AQI.Value >= 10L & AQI.Value <= 350L) %>%
+ ggplot() +
+  aes(x = AQI.Value, fill = Urban.Pop..) +
+  geom_histogram(bins = 30L) +
+  scale_fill_hue(direction = 1) +
+  labs(
+    x = "AQI Value Range",
+    y = "AQI Value Occurance",
+    title = "Comparison of AQI Value in Relation to Urban Population"
+  ) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(size = 15L,
+    face = "bold",
+    hjust = 0.5)
+  ) +
+  facet_wrap(vars(Country))
+
+ggplot(specificCountry) +
+  aes(
+    x = Ozone.AQI.Value,
+    y = Ozone.AQI.Category,
+    fill = Land.Area..Km..
+  ) +
+  geom_boxplot() +
+  scale_fill_viridis_c(option = "plasma", direction = 1) +
+  labs(
+    x = "Ozone AQI Value",
+    y = "Ozone Category",
+    title = "Ozone Values in Relation to Land Area",
+    fill = "Land Area (km)"
+  ) +
+  theme_gray() +
+  theme(
+    plot.title = element_text(size = 15L,
+    face = "bold",
+    hjust = 0.5),
+    legend.text = element_text(face = "bold"),
+    legend.title = element_text(face = "bold")
+  ) +
+  facet_wrap(vars(Country))
+
+
 ```
+{{< pagebreak >}}
+```{r}
+{r codeAppend, ref.label=knitr::all_labels(), echo=TRUE, eval=FALSE}
+```
+
 
