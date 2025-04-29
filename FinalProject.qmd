@@ -1,5 +1,5 @@
 ---
-tiitle: "Air Pollution Across the Globe"
+title: "Air Pollution Across the Globe"
 author: "Sneha Arya, Greer Moran, and Gabrielle Smeltzer"
 date: "April 24, 2025"
 date-modified: now
@@ -25,17 +25,19 @@ execute:
   warning: false
 ---
 
+# Table of Contents:
 
 ## Research Question 1
+
 How does pollutant air quality index values (e.g. Carbon Dioxide, Ozone, Nitrogen Dioxide, and Particle Matter) impact the overall air quality index, which are most contributing to poor air quality index?
 
 ## Plan
 
-1. Load/get needed packages in an R Chunk
-2. Read csv
-3. Use {dplyr} package to use rename() to replace column names
-4. Get linear regression model using lm() and summary()
-5. Go to Dr.Hatfield and ask how to clean summary() and use kableExtra
+1.  Load/get needed packages in an R Chunk
+2.  Read csv
+3.  Use {dplyr} package to use rename() to replace column names
+4.  Get linear regression model using () and summary()
+5.  Go to Dr.Hatfield and ask how to clean summary() and use kableExtra
 
 ```{r}
 #| label: packages-loaded
@@ -45,7 +47,6 @@ How does pollutant air quality index values (e.g. Carbon Dioxide, Ozone, Nitroge
 
 
 library(tidyverse)
-library(rvest)
 library(googlesheets4)
 library(knitr)
 library(dcData)
@@ -124,7 +125,7 @@ ggplot(
 
 ```
 
-# Analyze AQI
+# An Analysis of Air Quality 
 
 ```{r}
 library(dplyr)
@@ -158,6 +159,12 @@ specificCountry <- tidypopPoll %>%
   filter(Country %in% filteredCountry)
 
 
+```
+
+{{< pagebreak >}}
+
+```{r}
+#| label: fig-CountryAQI
 ##Create Comparison Visuals
 
 ggplot(specificCountry) +
@@ -179,6 +186,11 @@ ggplot(specificCountry) +
     plot.caption = element_text(hjust = 0.5)
   )
  
+
+```
+
+```{r}
+#| label: fig-UrbanpopulationAQI
 specificCountry %>%
  filter(AQI.Value >= 10L & AQI.Value <= 350L) %>%
  ggplot() +
@@ -197,7 +209,10 @@ specificCountry %>%
     hjust = 0.5)
   ) +
   facet_wrap(vars(Country))
+```
 
+```{r}
+#| label: fig-OzoneLandAreaRelation
 ggplot(specificCountry) +
   aes(
     x = Ozone.AQI.Value,
@@ -224,9 +239,11 @@ ggplot(specificCountry) +
 
 
 ```
-{{< pagebreak >}}
+
+# Data Sources and Acknowledgements
+
+# Code Appendix
+
 ```{r}
 {r codeAppend, ref.label=knitr::all_labels(), echo=TRUE, eval=FALSE}
 ```
-
-
