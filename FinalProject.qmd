@@ -54,6 +54,7 @@ library(tinytex)
 ```
 
 ```{r}
+
 #| label: Data Wrangling Code for Global Air Pollution
 #| lst-label: Global Air Pollution, Data Wrangling
 #| lst-cap: "Rename Needed Columns"
@@ -66,7 +67,7 @@ library(tinytex)
 
 library(dplyr)
 library(tidyverse)
-globalData <- read.csv("/Users/greermoran/Downloads/globalairpollutiondataset.csv")
+globalData <- read.csv("statproject.csv")
 
 cleanAQIdata <- globalData %>%
   rename(c(
@@ -84,44 +85,85 @@ aqiSummary
 
 # Create Table Summary Visualization ---
 
-aqiDF <- as.data.frame(aqiSummary$coefficients) ## create data frame
-aqiDF$Pollutant <- rownames(aqiDF)
-aqiDF <- aqiDF[, c("Pollutant", "Estimate", "Std. Error", "t value", "Pr(>|t|)")]
-colnames(aqiDF) <- c("Pollutant", "Est. Slope", "Std. Error", "t value", "p-value")
-rownames(aqiDF) <- NULL
+aqiModel <- as.data.frame(aqiSummary$coefficients) ## create data frame
+aqiModel$Pollutant <- rownames(aqiModel)
+aqiModel <- aqiModel[, c("Pollutant", "Estimate", "Std. Error", "t value", "Pr(>|t|)")]
+colnames(aqiModel) <- c("Pollutant", "Est. Slope", "Std. Error", "t value", "p-value")
+rownames(aqiModel) <- NULL
 
 
 library(knitr)
 library(kableExtra)
 kable(
-  aqiDF,
+  aqiModel,
   caption = "Linear Regression Summary for Pollutants impact on AQI",
   digits = 5
   ) %>%
   kable_styling(
     position = "center"
   )
-aqiDF
+aqiModel
 
 library(ggplot2)
 # 
 ggplot(
-  data = aqiDF, 
+  data = aqiModel, 
   mapping = aes(
     x = reorder(Pollutant, `Est. Slope`), 
-    y = `Est. Slope`
+    y = `Est. Slope`,
+    color = Pollutant
     )
   ) +
   geom_point(
-    size = 3, 
-    color = "steelblue"
+    size = 3
     ) +
   labs(
-    title = "Impact of Pollutants on Air Quality Index",
+    title = "Pollutant Influence on Air Quality Index",
     x = "Pollutant",
     y = "Estimated Slope"
   ) +
+  scale_color_manual(
+    values = c("black", "steelblue", "yellow3", "purple3", "red3")
+  )
   theme_minimal()
+
+# AQI Value by Pollutant Value Data Frame
+## Tidy data frame so that Pollutant is a column
+  
+tidyAQIdf <- cleanAQIdata %>%
+  pivot_longer(
+    cols = c(
+      CO,
+      Ozone,
+      NO2,
+      PM
+    ),
+    names_to = "Pollutant",
+    values_to = "Pollutant_Value"
+  )
+
+#AQI Value by Pollutant Value Scatterplots
+## Create facetted scatterplots using ggplot2
+
+ggplot(
+  data = tidyAQIdf,
+  mapping = aes(
+    x = Pollutant_Value,
+    y = AQI,
+    color = Pollutant
+    )
+  )+
+    geom_point() +
+    facet_wrap(~ Pollutant, scales = "free_x") +
+    labs(
+      title = "Value of Pollutant on AQI Measure",
+      x = "Pollutant Value",
+      y = "Air Quality Index (AQI) Value"
+    ) +
+    scale_color_manual(
+      values = c("steelblue", "yellow3", "purple3", "red3")) +
+    theme_minimal()
+
 
 ```
 
