@@ -16,7 +16,6 @@ format:
       - right=1in
       - bottom=1in
     colorlinks: true
-bibliography: references.bib
 nocite: |
   @*
 csl: MLA9.csl
@@ -167,7 +166,7 @@ ggplot(
 
 ```
 
-# An Analysis of Air Quality 
+# An Analysis of Air Quality
 
 ```{r}
 library(dplyr)
@@ -282,10 +281,9 @@ ggplot(specificCountry) +
 
 ```
 
-# Data Sources and Acknowledgements
+# Data Sources and Acknowledgement
 
-# Code Appendix
+# Code Appendix:
 
-```{r}
-{r codeAppend, ref.label=knitr::all_labels(), echo=TRUE, eval=FALSE}
+```{r codeAppend, ref.label=knitr::all_labels(), echo=TRUE, eval=FALSE}
 ```
