@@ -119,7 +119,7 @@ ggplot(
   labs(
     title = "Pollutant Influence on Air Quality Index",
     x = "Pollutant",
-    y = "Estimated Slope"
+    y = "Slope Measure"
   ) +
   scale_color_manual(
     values = c("black", "steelblue", "yellow3", "purple3", "red3")
