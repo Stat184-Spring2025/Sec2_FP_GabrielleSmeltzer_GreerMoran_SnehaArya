@@ -1,5 +1,5 @@
 ---
-tiitle: "Air Pollution Across the Globe"
+title: "Air Pollution Across the Globe"
 author: "Sneha Arya, Greer Moran, and Gabrielle Smeltzer"
 date: "April 24, 2025"
 date-modified: now
@@ -16,7 +16,6 @@ format:
       - right=1in
       - bottom=1in
     colorlinks: true
-bibliography: references.bib
 nocite: |
   @*
 csl: MLA9.csl
@@ -25,17 +24,19 @@ execute:
   warning: false
 ---
 
+# Table of Contents:
 
 ## Research Question 1
+
 How does pollutant air quality index values (e.g. Carbon Dioxide, Ozone, Nitrogen Dioxide, and Particle Matter) impact the overall air quality index, which are most contributing to poor air quality index?
 
 ## Plan
 
-1. Load/get needed packages in an R Chunk
-2. Read csv
-3. Use {dplyr} package to use rename() to replace column names
-4. Get linear regression model using lm() and summary()
-5. Go to Dr.Hatfield and ask how to clean summary() and use kableExtra
+1.  Load/get needed packages in an R Chunk
+2.  Read csv
+3.  Use {dplyr} package to use rename() to replace column names
+4.  Get linear regression model using () and summary()
+5.  Go to Dr.Hatfield and ask how to clean summary() and use kableExtra
 
 ```{r}
 #| label: packages-loaded
@@ -45,7 +46,6 @@ How does pollutant air quality index values (e.g. Carbon Dioxide, Ozone, Nitroge
 
 
 library(tidyverse)
-library(rvest)
 library(googlesheets4)
 library(knitr)
 library(dcData)
@@ -53,6 +53,7 @@ library(tinytex)
 ```
 
 ```{r}
+
 #| label: Data Wrangling Code for Global Air Pollution
 #| lst-label: Global Air Pollution, Data Wrangling
 #| lst-cap: "Rename Needed Columns"
@@ -65,7 +66,7 @@ library(tinytex)
 
 library(dplyr)
 library(tidyverse)
-globalData <- read.csv("/Users/greermoran/Downloads/globalairpollutiondataset.csv")
+globalData <- read.csv("statproject.csv")
 
 cleanAQIdata <- globalData %>%
   rename(c(
@@ -83,45 +84,206 @@ aqiSummary
 
 # Create Table Summary Visualization ---
 
-aqiDF <- as.data.frame(aqiSummary$coefficients) ## create data frame
-aqiDF$Pollutant <- rownames(aqiDF)
-aqiDF <- aqiDF[, c("Pollutant", "Estimate", "Std. Error", "t value", "Pr(>|t|)")]
-colnames(aqiDF) <- c("Pollutant", "Est. Slope", "Std. Error", "t value", "p-value")
-rownames(aqiDF) <- NULL
+aqiModel <- as.data.frame(aqiSummary$coefficients) ## create data frame
+aqiModel$Pollutant <- rownames(aqiModel)
+aqiModel <- aqiModel[, c("Pollutant", "Estimate", "Std. Error", "t value", "Pr(>|t|)")]
+colnames(aqiModel) <- c("Pollutant", "Est. Slope", "Std. Error", "t value", "p-value")
+rownames(aqiModel) <- NULL
 
 
 library(knitr)
 library(kableExtra)
 kable(
-  aqiDF,
+  aqiModel,
   caption = "Linear Regression Summary for Pollutants impact on AQI",
   digits = 5
   ) %>%
   kable_styling(
     position = "center"
   )
-aqiDF
+aqiModel
 
 library(ggplot2)
 # 
 ggplot(
-  data = aqiDF, 
+  data = aqiModel, 
   mapping = aes(
     x = reorder(Pollutant, `Est. Slope`), 
-    y = `Est. Slope`
+    y = `Est. Slope`,
+    color = Pollutant
     )
   ) +
   geom_point(
-    size = 3, 
-    color = "steelblue"
+    size = 3
     ) +
   labs(
-    title = "Impact of Pollutants on Air Quality Index",
+    title = "Pollutant Influence on Air Quality Index",
     x = "Pollutant",
-    y = "Estimated Slope"
+    y = "Slope Measure"
   ) +
+  scale_color_manual(
+    values = c("black", "steelblue", "yellow3", "purple3", "red3")
+  )
   theme_minimal()
+
+# AQI Value by Pollutant Value Data Frame
+## Tidy data frame so that Pollutant is a column
+  
+tidyAQIdf <- cleanAQIdata %>%
+  pivot_longer(
+    cols = c(
+      CO,
+      Ozone,
+      NO2,
+      PM
+    ),
+    names_to = "Pollutant",
+    values_to = "Pollutant_Value"
+  )
+
+#AQI Value by Pollutant Value Scatterplots
+## Create facetted scatterplots using ggplot2
+
+ggplot(
+  data = tidyAQIdf,
+  mapping = aes(
+    x = Pollutant_Value,
+    y = AQI,
+    color = Pollutant
+    )
+  )+
+    geom_point() +
+    facet_wrap(~ Pollutant, scales = "free_x") +
+    labs(
+      title = "Value of Pollutant on AQI Measure",
+      x = "Pollutant Value",
+      y = "Air Quality Index (AQI) Value"
+    ) +
+    scale_color_manual(
+      values = c("steelblue", "yellow3", "purple3", "red3")) +
+    theme_minimal()
+
 
 ```
 
-# Analyze AQI
+# An Analysis of Air Quality
+
+```{r}
+library(dplyr)
+library(tidyverse)
+library(ggplot2)
+
+
+## Create space for population and pollution data
+pollutionData <- read.csv("statproject.csv")
+populationData <-read.csv("statproject1.csv")
+
+## Wrangle the data for calling and combination
+## Combine the data for population
+populationPollution <-left_join(
+  x = pollutionData,
+  y = populationData,
+  by = join_by(Country == 'Country..or.dependency.')
+)
+
+
+##Filter out all cities without population
+
+tidypopPoll <- populationPollution %>%
+
+filter(if_all(Population..2020., ~ !is.na(.)))
+
+##Filter our data to a country from each continent, excluding Antarctica
+
+filteredCountry <- c("Australia", "Brazil", "Canada", "China","France", "South Africa"  )
+specificCountry <- tidypopPoll %>%  
+  filter(Country %in% filteredCountry)
+
+
+```
+
+{{< pagebreak >}}
+
+```{r}
+#| label: fig-CountryAQI
+##Create Comparison Visuals
+
+ggplot(specificCountry) +
+  aes(x = Country, fill = AQI.Category) +
+  geom_bar() +
+  scale_fill_brewer(palette = "RdPu", direction = 1) +
+  labs(
+    x = "Country",
+    y = "Category Count",
+    title = "AQI Category by Country",
+    caption = "A count of each AQI category by country.",
+    fill = "AQI Categories"
+  ) +
+  theme_linedraw() +
+  theme(
+    plot.title = element_text(size = 15L,
+    face = "bold",
+    hjust = 0.5),
+    plot.caption = element_text(hjust = 0.5)
+  )
+ 
+
+```
+
+```{r}
+#| label: fig-UrbanpopulationAQI
+specificCountry %>%
+ filter(AQI.Value >= 10L & AQI.Value <= 350L) %>%
+ ggplot() +
+  aes(x = AQI.Value, fill = Urban.Pop..) +
+  geom_histogram(bins = 30L) +
+  scale_fill_hue(direction = 1) +
+  labs(
+    x = "AQI Value Range",
+    y = "AQI Value Occurance",
+    title = "Comparison of AQI Value in Relation to Urban Population"
+  ) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(size = 15L,
+    face = "bold",
+    hjust = 0.5)
+  ) +
+  facet_wrap(vars(Country))
+```
+
+```{r}
+#| label: fig-OzoneLandAreaRelation
+ggplot(specificCountry) +
+  aes(
+    x = Ozone.AQI.Value,
+    y = Ozone.AQI.Category,
+    fill = Land.Area..Km..
+  ) +
+  geom_boxplot() +
+  scale_fill_viridis_c(option = "plasma", direction = 1) +
+  labs(
+    x = "Ozone AQI Value",
+    y = "Ozone Category",
+    title = "Ozone Values in Relation to Land Area",
+    fill = "Land Area (km)"
+  ) +
+  theme_gray() +
+  theme(
+    plot.title = element_text(size = 15L,
+    face = "bold",
+    hjust = 0.5),
+    legend.text = element_text(face = "bold"),
+    legend.title = element_text(face = "bold")
+  ) +
+  facet_wrap(vars(Country))
+
+
+```
+
+# Data Sources and Acknowledgement
+
+# Code Appendix:
+
+```{r codeAppend, ref.label=knitr::all_labels(), echo=TRUE, eval=FALSE}
+```
