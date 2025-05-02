@@ -23,12 +23,11 @@ execute:
   echo: false
   warning: false
 ---
+# **Research Topic: Air Pollution Across the Globe**
 
-# Table of Contents:
+# **Research Questions**
 
-## Research Question 1
-
-How does pollutant air quality index values (e.g. Carbon Dioxide, Ozone, Nitrogen Dioxide, and Particle Matter) impact the overall air quality index, which are most contributing to poor air quality index?
+In order to analyze air pollution across the globe, we first need to examine how air pollution is impacted by pollutants. Further, how does pollutant air quality index values (e.g. Carbon Dioxide, Ozone, Nitrogen Dioxide, and Particle Matter) impact the overall air quality index, which are most contributing to poor air quality index? Understanding the strength of each pollutant's relationship with air quality will 
 
 ## Plan
 
@@ -251,6 +250,7 @@ specificCountry %>%
   ) +
   facet_wrap(vars(Country))
 ```
+
 
 ```{r}
 #| label: fig-OzoneLandAreaRelation
