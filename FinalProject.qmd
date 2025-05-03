@@ -30,6 +30,7 @@ This research focuses on air pollution across the globe, a topic that directly i
 
 # **Research Questions**
 
+<<<<<<< Updated upstream
 To guide our analysis, our team developed a set of research questions focused on identifying key relationships between population and pollution levels. One area of focus is how does population contribute to the pollution over a select six countries. In designing this study, our team prioritized ethical data practices by applying the FAIR (Findable, Accessible, Interoperable, Reusable) and CARE (Collective Benefit, Authority to Control, Responsibility, Ethics) principles. We considered collective benefit by ensuring our findings could have a global impact, as well as considering responsibility by avoiding selection bias. Furthermore, to promote inclusivity and neutrality in our analysis, we selected six countries representing each continent using a random name generator and excluded Antartica due to its low population. Another question our team will investigate is how specific pollutant values, like Carbon Monoxide, Ozone, Nitrogen Dioxide, and Particulate Matter, contribute to a country's overall Air Quality Index (AQI), and which pollutants have the strongest impact. Lastly, observing whether urban population percentage can have a positive or detrimental effect on pollution is essential to understanding how urbanization may shape air quality outcomes across regions. Overall, this is not an exhaustive list of questions of what our team intends to explore since there are NOT FINISHED XX
 
 ## Plan
@@ -50,8 +51,11 @@ To guide our analysis, our team developed a set of research questions focused on
 library(tidyverse)
 library(googlesheets4)
 library(knitr)
+library(kableExtra)
 library(dcData)
 library(tinytex)
+library(dplyr)
+library(ggplot2)
 ```
 
 ```{r}
@@ -66,8 +70,7 @@ library(tinytex)
 ## Get Correct Column Names ---
 ### Get Specific Data Frame of Correct Column Names
 
-library(dplyr)
-library(tidyverse)
+
 globalData <- read.csv("statproject.csv")
 
 cleanAQIdata <- globalData %>%
@@ -82,8 +85,12 @@ cleanAQIdata <- globalData %>%
 
 aqiModel <- lm(AQI ~ CO + Ozone + NO2 + PM, data = cleanAQIdata)
 aqiSummary <- summary(aqiModel)
-aqiSummary
 
+
+```
+
+```{r}
+#| label: tab:regression-visual
 # Create Table Summary Visualization ---
 
 aqiModel <- as.data.frame(aqiSummary$coefficients) ## create data frame
@@ -92,21 +99,22 @@ aqiModel <- aqiModel[, c("Pollutant", "Estimate", "Std. Error", "t value", "Pr(>
 colnames(aqiModel) <- c("Pollutant", "Est. Slope", "Std. Error", "t value", "p-value")
 rownames(aqiModel) <- NULL
 
-
-library(knitr)
-library(kableExtra)
 kable(
   aqiModel,
   caption = "Linear Regression Summary for Pollutants impact on AQI",
-  digits = 5
+  digits = 5,
+  format = "latex"
   ) %>%
   kable_styling(
     position = "center"
   )
-aqiModel
 
-library(ggplot2)
+```
+
+```{r}
+#| label: fig-AQIModel
 # 
+print(
 ggplot(
   data = aqiModel, 
   mapping = aes(
@@ -126,8 +134,13 @@ ggplot(
   scale_color_manual(
     values = c("black", "steelblue", "yellow3", "purple3", "red3")
   )
-  theme_minimal()
+  + theme_minimal()
+)
 
+```
+
+```{r}
+#| label: fig-PollutantValue
 # AQI Value by Pollutant Value Data Frame
 ## Tidy data frame so that Pollutant is a column
   
@@ -164,16 +177,12 @@ ggplot(
     scale_color_manual(
       values = c("steelblue", "yellow3", "purple3", "red3")) +
     theme_minimal()
-
-
 ```
 
 # An Analysis of Air Quality
 
 ```{r}
-library(dplyr)
-library(tidyverse)
-library(ggplot2)
+#| label: SpecificCountry
 
 
 ## Create space for population and pollution data
@@ -232,6 +241,8 @@ ggplot(specificCountry) +
 
 ```
 
+{{< pagebreak >}}
+
 ```{r}
 #| label: fig-UrbanpopulationAQI
 specificCountry %>%
@@ -254,6 +265,11 @@ specificCountry %>%
   facet_wrap(vars(Country))
 ```
 
+<<<<<<< Updated upstream
+=======
+{{< pagebreak >}}
+
+>>>>>>> Stashed changes
 ```{r}
 #| label: fig-OzoneLandAreaRelation
 ggplot(specificCountry) +
@@ -282,6 +298,8 @@ ggplot(specificCountry) +
 
 
 ```
+
+{{< pagebreak >}}
 
 # Data Sources and Acknowledgement
 
