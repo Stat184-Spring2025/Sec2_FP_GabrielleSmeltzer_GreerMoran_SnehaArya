@@ -39,13 +39,9 @@ We also aim to examine whether urban population percentage plays a role in pollu
 Overall, this is not an exhaustive list of the questions we aim to explore, as the dataset contains many overlapping features that may reveal new insights. Our goal is to use structured analysis and clear, accessible visualizations to better understand global air quality trends and their potential implications for effects on the environment and public health.
 
 
-## Plan
+## Provenance of Data
 
-1.  Load/get needed packages in an R Chunk
-2.  Read csv
-3.  Use {dplyr} package to use rename() to replace column names
-4.  Get linear regression model using () and summary()
-5.  Go to Dr.Hatfield and ask how to clean summary() and use kableExtra
+For this project, our team uses two datasets to explore global air pollution and population patterns. The main Kaggle dataset, “Global Air Pollution Dataset”, contains pollutant-specific AQI values and was originally compiled by Hasib Al Muzdadid. The secondary Kaggle dataset, “Countries Population by Year 2020”,  provides country-level population data and was originally created by Mohamed Fadl. It includes metrics such as total population, population density, land area, fertility rate, median age, and percentage of urban population. To maintain clarity in our visualizations and avoid overcrowding, our team chose to not include individual cities in our graphics. Instead, we aggregated the population values by country, using the sum of the city-level populations to represent each country's total. This approach allows us to incorporate population context into our pollution analysis without overwhelming the visualizations. Both of the datasets are publicly available and are intended for educational and research use.
 
 ```{r}
 #| label: packages-loaded
