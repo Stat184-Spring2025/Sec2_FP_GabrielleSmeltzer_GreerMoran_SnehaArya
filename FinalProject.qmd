@@ -29,8 +29,7 @@ execute:
 This research focuses on air pollution across the globe, a topic that directly impacts society's health, the climate, and quality of life. As pollution levels are rising exponentially worldwide, it is vital to understand relationships between population distribution and the severity of air pollution. Using a main dataset regarding Global Air Quality and a secondary dataset on global city-level populations, our research centers on observing pollution and population data to explore these patterns. Since population values in our secondary dataset were provided by city, we aggregated them to generate total population figures by country. We chose to visualize data at the country level to reduce clutter and improve clarity among visualizations, allowing for a more accessible and focused exploration of global air pollution patterns.
 
 # **Research Questions**
-
-To guide our analysis, our team develops a set of research questions focused on identifying key relationships between population and pollution levels. One area of focus is how population contributes to pollution across a select six countries. 
+To guide our analysis, our team develops a set of research questions focused on identifying key relationships between population and pollution levels. One area of focus is how population contributes to pollution across a select six countries.
 
 Another central focus of our project is investigating how specific pollutant values (Carbon Monoxide, Ozone, Nitrogen Dioxide, and Particulate Matter) contribute to a country's overall Air Quality Index (AQI). To explore this, we apply linear regression modeling and plan to visualize the results through a regression summary table and a slope plot illustrating each pollutant’s influence on AQI. In addition, we plan to use faceted scatter plots to compare pollutant values to AQI, offering a clear view of how each variable individually correlates with air quality.
 
@@ -64,7 +63,7 @@ Our team's analysis aims to raise awareness of global air pollution trends in th
 
 ### Authority to Control
 
-The original authors for the datasets, Hasib Al Muzdadid and Mohamed Fadl are credited in the "Provenance of Data" section, and the datasets were used fo the intended purposes of education and research. The meaning of the data is not altered or misrepresented further than the original purpose. 
+The original authors for the datasets, Hasib Al Muzdadid and Mohamed Fadl are credited in the "Provenance of Data" section, and the datasets were used fo the intended purposes of education and research. The meaning of the data is not altered or misrepresented further than the original purpose.
 
 ### Responsibility
 
@@ -78,9 +77,33 @@ Our analysis avoids misleading visualization or unsupported claims. Though our t
 
 For this project, our team uses two datasets to explore global air pollution and population patterns. The main Kaggle dataset, “Global Air Pollution Dataset”, contains pollutant-specific AQI values and was originally compiled by Hasib Al Muzdadid. The dataset was created to support research in areas like environmental science, pollution forecasting, and public health. As for cases, each case represents a city, with an association of pollutant measurements and country information.
 
-The secondary Kaggle dataset, “Countries Population by Year 2020”,  provides country-level population data and was originally created by Mohamed Fadl. This dataset provides statistics based on demographics in countries, including total population, population density, land area, fertility rate, median age, and percentage of urban population. Each case in this dataset represents a country or dependency. While the population dataset is organized by country, our analysis focuses on combining both sources at the country level to maintain consistency in our visualizations. 
+The secondary Kaggle dataset, “Countries Population by Year 2020”, provides country-level population data and was originally created by Mohamed Fadl. This dataset provides statistics based on demographics in countries, including total population, population density, land area, fertility rate, median age, and percentage of urban population. Each case in this dataset represents a country or dependency. While the population dataset is organized by country, our analysis focuses on combining both sources at the country level to maintain consistency in our visualizations.
 
 To maintain further clarity in our visualizations and avoid overcrowding, our team chose to not include individual cities in our graphics. Instead, we aggregated the population values by country, using the sum of the city-level populations to represent each country's total. This approach allows us to incorporate population context into our pollution analysis without overwhelming the visualizations. Both of the datasets are publicly available and are intended for educational and research use.
+
+{{< pagebreak >}}
+
+# An Analysis of Air Quality
+
+## Cases & Attributes:
+
+### Cases: 
+
+A case is a specific global location.
+
+***Our cleaned and tidied data:***
+
+*The more in-depth cases include the countries: Australia, Brazil, Canada, China, France, and South Asia.*
+
+*These cases contain multiple cities worth of population data of varying counts.*
+
+### Attributes:
+
+The attributes from within the data include: city, AQI Value, AQI Category, CO2 AQI Value, CO2 AQI Category, Ozone AQI Value, Ozone AQI Category, NO2 AQI Value, NO2 AQI Category, PM2.5 AQI Value, PM2.5 AQI Value, Population during 2020, Yearly Population Change, Net Change, Density per Km, Land Area (Km), Migrants Count, Fertile Rate, Median Age, Urban Population Percentage, and World Share Percentage.
+
+We chose to focus on the values from each pollutant (CO2, Ozone, NO2, & PM2.5), the overall AQI Value and Category, Land Area (Km), and Urban Population. These attributes were parts of our original datasets. The datasets were then combined and cleaned to represent a smaller case set so that comparisons would be easier attained.
+
+{{< pagebreak >}}
 
 ```{r}
 #| label: packages-loaded
@@ -92,11 +115,11 @@ To maintain further clarity in our visualizations and avoid overcrowding, our te
 library(tidyverse)
 library(googlesheets4)
 library(knitr)
-library(kableExtra)
 library(dcData)
 library(tinytex)
 library(dplyr)
 library(ggplot2)
+library(kableExtra)
 ```
 
 ```{r}
@@ -130,6 +153,8 @@ aqiSummary <- summary(aqiModel)
 
 ```
 
+{{< pagebreak >}}
+
 ```{r}
 #| label: tab:regression-visual
 # Create Table Summary Visualization ---
@@ -151,6 +176,8 @@ kable(
   )
 
 ```
+
+{{< pagebreak >}}
 
 ```{r}
 #| label: fig-AQIModel
@@ -179,6 +206,8 @@ ggplot(
 )
 
 ```
+
+{{< pagebreak >}}
 
 ```{r}
 #| label: fig-PollutantValue
@@ -220,7 +249,7 @@ ggplot(
     theme_minimal()
 ```
 
-# An Analysis of Air Quality
+{{< pagebreak >}}
 
 ```{r}
 #| label: SpecificCountry
@@ -251,10 +280,11 @@ filteredCountry <- c("Australia", "Brazil", "Canada", "China","France", "South A
 specificCountry <- tidypopPoll %>%  
   filter(Country %in% filteredCountry)
 
-
 ```
 
 {{< pagebreak >}}
+
+# AQI Values 
 
 ```{r}
 #| label: fig-CountryAQI
@@ -295,22 +325,19 @@ specificCountry %>%
   labs(
     x = "AQI Value Range",
     y = "AQI Value Occurance",
-    title = "Comparison of AQI Value in Relation to Urban Population"
+    title = "Relationship between AQI Value & Urban Population"
   ) +
   theme_minimal() +
   theme(
-    plot.title = element_text(size = 15L,
+    plot.title = element_text(size = 12L,
     face = "bold",
     hjust = 0.5)
   ) +
   facet_wrap(vars(Country))
 ```
 
-<<<<<<< Updated upstream
-=======
 {{< pagebreak >}}
 
->>>>>>> Stashed changes
 ```{r}
 #| label: fig-OzoneLandAreaRelation
 ggplot(specificCountry) +
@@ -343,12 +370,11 @@ ggplot(specificCountry) +
 {{< pagebreak >}}
 
 # Data Sources and Acknowledgement
+Fadl, Mohamed. “Countries Population by Year 2020.” Kaggle, 19 June 2020, [www.kaggle.com/datasets/eng0mohamed0nabil/population-by-country-2020](http://www.kaggle.com/datasets/eng0mohamed0nabil/population-by-country-2020).
 
-Fadl, Mohamed. “Countries Population by Year 2020.” Kaggle, 19 June 2020, www.kaggle.com/datasets/eng0mohamed0nabil/population-by-country-2020. 
+Muzdadid, Hasib Al. “Global Air Pollution Dataset.” Kaggle, 8 Nov. 2022, [www.kaggle.com/datasets/hasibalmuzdadid/global-air-pollution-dataset?resource=download](http://www.kaggle.com/datasets/hasibalmuzdadid/global-air-pollution-dataset?resource=download).
 
-Muzdadid, Hasib Al. “Global Air Pollution Dataset.” Kaggle, 8 Nov. 2022, www.kaggle.com/datasets/hasibalmuzdadid/global-air-pollution-dataset?resource=download.
-
-“Wheel of Names.” Wheel of Names, wheelofnames.com/. Accessed 4 May 2025. 
+“Wheel of Names.” Wheel of Names, wheelofnames.com/. Accessed 4 May 2025.
 
 # Code Appendix:
 
