@@ -1,10 +1,10 @@
 # Air Pollution Across the Globe
 
-An analysis of global pollution and population datasets to better understand different factors when it comes to air quality.
+This project is an analysis of global pollution and population datasets to better understand different factors when it comes to air quality.
 
 ## Overview
 
-This project explores air pollution across the globe by analyzing the relationship between population distribution and pollutant levels in six randomly selected countries (Australia, Brazil, Canada, China, France, and South Africa). Using two publicly available datasets from Kaggle, our analysis focuses on key air quality indicators such as Carbon Monoxide, Ozone, Nitrogen Dioxide, and Particulate Matter, along with country-level population information.
+Our team explores air pollution across the globe by analyzing the relationship between population distribution and pollutant levels in six randomly selected countries (Australia, Brazil, Canada, China, France, and South Africa). Using two publicly available datasets from Kaggle, our analysis focuses on key air quality indicators such as Carbon Monoxide, Ozone, Nitrogen Dioxide, and Particulate Matter, along with country-level population information.
 
 Through data wrangling and visualizations in R, our team aims to find how urbanization, land area, and specific pollutants influence a country's overall Air Quality Index (AQI). Our goal is to make complex global pollution trends more understandable and visually accessible, while following FAIR and CARE principles to ensure ethical and inclusive research practices.
 
