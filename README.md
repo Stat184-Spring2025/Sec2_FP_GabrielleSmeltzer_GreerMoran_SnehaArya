@@ -1,6 +1,6 @@
 # Air Pollution Across the Globe
 
-This project is an analysis of global pollution and population datasets to better understand different factors when it comes to air quality.
+This project is an analysis of global pollution and population datasets to better understand different factors regarding air quality.
 
 ## Overview
 
