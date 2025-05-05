@@ -372,6 +372,12 @@ ggplot(specificCountry) +
 
 # Data Sources and Acknowledgement
 
+Fadl, Mohamed. “Countries Population by Year 2020.” Kaggle, 19 June 2020, [www.kaggle.com/datasets/eng0mohamed0nabil/population-by-country-2020](http://www.kaggle.com/datasets/eng0mohamed0nabil/population-by-country-2020).
+
+Muzdadid, Hasib Al. “Global Air Pollution Dataset.” Kaggle, 8 Nov. 2022, [www.kaggle.com/datasets/hasibalmuzdadid/global-air-pollution-dataset?resource=download](http://www.kaggle.com/datasets/hasibalmuzdadid/global-air-pollution-dataset?resource=download).
+
+“Wheel of Names.” Wheel of Names, wheelofnames.com/. Accessed 4 May 2025.
+
 # Code Appendix:
 
 ```{r codeAppend, ref.label=knitr::all_labels(), echo=TRUE, eval=FALSE}
