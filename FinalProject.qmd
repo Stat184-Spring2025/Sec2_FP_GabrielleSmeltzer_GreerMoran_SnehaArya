@@ -27,7 +27,7 @@ execute:
 
 # **Research Questions**
 
-In order to analyze air pollution across the globe, we first need to examine how air pollution is impacted by pollutants. Further, how does pollutant air quality index values (e.g. Carbon Dioxide, Ozone, Nitrogen Dioxide, and Particle Matter) impact the overall air quality index, which are most contributing to poor air quality index? Understanding the strength of each pollutant's relationship with air quality will 
+In order to analyze air pollution across the globe, we first need to examine how air pollution is impacted by pollutants. Further, how does pollutant air quality index values (e.g. Carbon Dioxide, Ozone, Nitrogen Dioxide, and Particle Matter) impact the overall air quality index, which are most contributing to poor air quality index? Understanding the strength of each pollutant's relationship with air quality will educate researchers on how the cases of each city 
 
 ## Plan
 
