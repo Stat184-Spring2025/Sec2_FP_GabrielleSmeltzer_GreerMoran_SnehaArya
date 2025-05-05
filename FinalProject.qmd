@@ -30,7 +30,6 @@ This research focuses on air pollution across the globe, a topic that directly i
 
 # **Research Questions**
 
-<<<<<<< Updated upstream
 To guide our analysis, our team develops a set of research questions focused on identifying key relationships between population and pollution levels. One area of focus is how population contributes to pollution across a select six countries. 
 
 Another central focus of our project is investigating how specific pollutant values (Carbon Monoxide, Ozone, Nitrogen Dioxide, and Particulate Matter) contribute to a country's overall Air Quality Index (AQI). To explore this, we apply linear regression modeling and plan to visualize the results through a regression summary table and a slope plot illustrating each pollutant’s influence on AQI. In addition, we plan to use faceted scatter plots to compare pollutant values to AQI, offering a clear view of how each variable individually correlates with air quality.
@@ -344,6 +343,12 @@ ggplot(specificCountry) +
 {{< pagebreak >}}
 
 # Data Sources and Acknowledgement
+
+Fadl, Mohamed. “Countries Population by Year 2020.” Kaggle, 19 June 2020, www.kaggle.com/datasets/eng0mohamed0nabil/population-by-country-2020. 
+
+Muzdadid, Hasib Al. “Global Air Pollution Dataset.” Kaggle, 8 Nov. 2022, www.kaggle.com/datasets/hasibalmuzdadid/global-air-pollution-dataset?resource=download.
+
+“Wheel of Names.” Wheel of Names, wheelofnames.com/. Accessed 4 May 2025. 
 
 # Code Appendix:
 
