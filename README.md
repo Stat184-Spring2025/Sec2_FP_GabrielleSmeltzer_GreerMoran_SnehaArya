@@ -21,6 +21,7 @@ Be sure to list where you got any data used within the project. Be sure to ackno
 ## Authors
 
 Sneha Arya:
+An Applied Data Science student working to strengthen skills in data analysis, R programming, and exploring real-world problems through statistical analysis and visualization. Feel free to contact me at sfa5848@psu.edu with relevant inquiries.
 
 Greer Moran:
 
