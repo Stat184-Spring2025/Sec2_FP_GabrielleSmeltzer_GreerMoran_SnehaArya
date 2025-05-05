@@ -88,7 +88,7 @@ To maintain further clarity in our visualizations and avoid overcrowding, our te
 
 ## Cases & Attributes:
 
-### Cases: 
+### Cases:
 
 A case is a specific global location.
 
@@ -103,6 +103,19 @@ A case is a specific global location.
 The attributes from within the data include: city, AQI Value, AQI Category, CO2 AQI Value, CO2 AQI Category, Ozone AQI Value, Ozone AQI Category, NO2 AQI Value, NO2 AQI Category, PM2.5 AQI Value, PM2.5 AQI Value, Population during 2020, Yearly Population Change, Net Change, Density per Km, Land Area (Km), Migrants Count, Fertile Rate, Median Age, Urban Population Percentage, and World Share Percentage.
 
 We chose to focus on the values from each pollutant (CO2, Ozone, NO2, & PM2.5), the overall AQI Value and Category, Land Area (Km), and Urban Population. These attributes were parts of our original datasets. The datasets were then combined and cleaned to represent a smaller case set so that comparisons would be easier attained.
+
+## Graphics Table of Contents
+
+-   Pollutant Influence on AQI:
+    -   @fig-AQIModel
+-   Pollutant Values on Air Quality Measure:
+    -   @fig-PollutantValue
+-   Selected Countries & their Air Quality Measurements:
+    -   @fig-CountryAQI
+-   Urban Population Rate Influence on Air Quality per Generated Countries:
+    -   @fig-UrbanpopulationAQI
+-   Land Area Influence on Ozone Layer Pollutants per Generated Countries:
+    -   @fig-OzoneLandAreaRelation
 
 {{< pagebreak >}}
 
@@ -157,7 +170,7 @@ aqiSummary <- summary(aqiModel)
 {{< pagebreak >}}
 
 ```{r}
-#| label: tab:regression-visual
+#| label: tbl-Regressionvisual
 # Create Table Summary Visualization ---
 
 aqiModel <- as.data.frame(aqiSummary$coefficients) ## create data frame
@@ -179,6 +192,34 @@ kable(
 ```
 
 {{< pagebreak >}}
+
+# Pollutant Influence on Air Quality Index
+
+Figure 1 - @fig-AQIModel
+
+Linear Regression Summary of Pollutant on AQI
+
+This table, @tbl-Regressionvisual provides an overview of the regression summary each pollutant (CO, Ozone, NO2, and PM) has on the measured AQI value along different cities across the globe. This offers valuable context abut how Air Quality Index (AQI) is measured, how the pollutants influence the strength of AQI. The regression summary includes statistics of estimated slope, standard error, t-value, and p-value.
+
+Key Insights:
+
+-   The estimated slope between Particle Matter with diameter 2.5 micrometers or less have a near 1.0 slope of regression line, at 0.98014, indicating they have a very strong relationship.
+
+-   The p-value of carbon monoxide (CO) is considerably above the average significance level of 5%, with a value of 0.66715. Despite lack of running a hypothesis test, CO would be considered a statistically insignificant pollutant on AQI measure since the statistic suggests there is a 50% chance that the observed results are due to chance.
+
+-   Both nitrogen dioxide and carbon monoxide, NO2 and CO, have near zero estimated slope values of -0.01350 and 0.01707 respectively. Further, the pollutants could have little impact on the air quality measure.
+
+{{< pagebreak >}}
+
+# Linear Regression Slope Evaluation for each Pollutant 
+
+The figure(@fig-AQIModel) provides the estimated slope of each pollutant’s linear regression relationship with air quality index graphed as a single point. This plot of five points helps identify the difference among pollutants estimated slope measured outputted in Table 1.
+
+Key Insights:
+
+-   Particle matter with diameter 2.5 micrometers or less (PM) has a considerably stronger relationship with air quality index compared to the other pollutants.
+
+-   Both glyphs of nitrogen dioxide and carbon monoxide, NO2 and CO, lie closely to the zero line. Indicating a near-zero relationship with little to no impact on AQI.
 
 ```{r}
 #| label: fig-AQIModel
@@ -210,6 +251,20 @@ ggplot(
 
 {{< pagebreak >}}
 
+# AQI Value by Each Pollutant
+
+Figure 2 - Scatterplot of Each Pollutant on AQI Measure
+
+This figure (@fig-PollutantValue) displays each air quality index (AQI) by the value of each pollutant. This scatterplot identifies the spread that creates the slope of each Pollutant on AQI measure. 
+
+Key Insights:
+
+-    There is a strong positive relationship between particle matter with diameter 2.5 micrometers or less (PM) and air quality index (AQI). A higher particle matter consistently increases the measure of air quality index. 
+
+-   There is strong variation within Ozone above slope line reflecting a weak-to-moderate relationship with air quality index. This indicates that because the relationship is not strong, air quality index can still have a high value despite having a low Ozone value.
+
+-   Both nitrogen dioxide and carbon monoxide, NO2 and CO, display a near cone shaped spread of variation. The glyphs come to a slightly triangular shape, indicating that there could be heteroscedasticity. Further, the line of slope shown in black for each scatterplot has observed values closer to it with higher values of the pollutant and AQI because the variance of its residuals is most likely not constant. With this observed, a linear regression model is not best to explain the relationship between air quality index and each of these variables.
+
 ```{r}
 #| label: fig-PollutantValue
 # AQI Value by Pollutant Value Data Frame
@@ -239,6 +294,7 @@ ggplot(
     )
   )+
     geom_point() +
+   geom_abline() +
     facet_wrap(~ Pollutant, scales = "free_x") +
     labs(
       title = "Value of Pollutant on AQI Measure",
@@ -285,7 +341,11 @@ specificCountry <- tidypopPoll %>%
 
 {{< pagebreak >}}
 
-# AQI Values 
+# AQI Values by Country
+
+Countries Selected: Australia, Brazil, Canada, China, France, & South Africa
+
+In researching the relationship between Pollution/Air Quality and Population, there was an excess of data. In order to create visuals that would be readable and clear we randomly generated (Australia, Brazil, Canada, China, France, and South Africa) one from each continent (excluding Antarctica due to its low population). These selected countries are a subset of the overall data and present the global rates of pollution. They display a potential relationship for comparison in each country per continent. The visual, @fig-CountryAQI, explains the overall relationship between each AQI Category and its relevance to each country. The x-axis contains each country while the y-axis displays the count of each category displayed. Each color within the bars represents the AQI Categories; Good, Hazardous, Moderate, Unhealthy, Unhealthy for Sensitive Groups, and Very Unhealthy. Based on the data, we can note that Brazil had the most data representing a Good AQI while China had a range of all AQI values. This suggests that Brazil, Australia, Canada and France could have the lowest rates of pollution while China and South Africa may have higher rates. It may also be skewed due to a lower collection of data from each city within the countries selected. The AQI data was taken from each city within our selected countries and there may be less cities represented in the countries of Australia, Canada, and South Africa. The shorter bar graph does not necessarily mean that it has less or more pollution, but is a representation of the data that had been previously recorded.
 
 ```{r}
 #| label: fig-CountryAQI
@@ -315,6 +375,10 @@ ggplot(specificCountry) +
 
 {{< pagebreak >}}
 
+# AQI & Urban Populations
+
+When looking at the relationship between AQI Value and Urban Populations it was observed that the countries with a higher urban population rate had a large number of lower AQI values. This illustrates that there is a potential relationship between the Urban rate of living and pollution. The increased count of low AQI values indicates that the more people that live within the Urban Population, the lower the pollution rate will likely be (@fig-UrbanpopulationAQI). The x-axis represents the overall AQI Values gathered, and the y-axis shows the count of each AQI value occuring. Additionally, the visual is faceted into our six randomly generated countries, and the counts displayed are color coded to represent the Urban Populations for each country. As noted above, our team acknowledges that the datasets used have less data representing certain countries. Thus, Australia, Canada and South Africa have less data representing their case, whereas Brazil, China, and France have more data. So in conclusion, while the data may lack full representation of all major cities within each country, the visualization depicts that countries with more relevant urban population have less pollution.
+
 ```{r}
 #| label: fig-UrbanpopulationAQI
 specificCountry %>%
@@ -325,7 +389,7 @@ specificCountry %>%
   scale_fill_hue(direction = 1) +
   labs(
     x = "AQI Value Range",
-    y = "AQI Value Occurance",
+    y = "AQI Count",
     title = "Relationship between AQI Value & Urban Population"
   ) +
   theme_minimal() +
@@ -338,6 +402,10 @@ specificCountry %>%
 ```
 
 {{< pagebreak >}}
+
+# Will Ozone Quality Be Effected by Land Area?
+
+To further evaluate the relationship between air quality and pollution, it is vital to think about how land area may influence ozone rates. Ozone has an important relationship regarding global warming and pollution. The ozone layer is often talked about in Earth Science courses, on the news, and in any atmospheric/environmental regard. Lately it is important to note that Ozone rates have been on the rise, and this may negatively impact how the lungs function. When intake is high, ozone can cause inflammation and other permanent damage to the lungs (Reyes Becerra, 2025). This relationship between overall air quality and ozone created questions about how certain factors, such as land area, may have effect on ozone and air quality rates. The measured land area includes China, Canada, Brazil, France, and South Africa from highest to lowest, respectively (@fig-OzoneLandAreaRelation). Most of the data shows that all countries have either moderate or good ozone values, with the exception being China. This indicates that land area has little effect on ozone health, and there may need to be a more specific study conducted to draw further conclusions on the relationship between land area and ozone quality. The data appears to be collected in an observational way leaving way for confounding variables to hinder an overall conclusion for a relationship between ozone and land area. In order to follow F.A.I.R and C.A.R.E conventions, it is appropriate to conclude that a more extensive experiment will need to be done for more definite conclusions.
 
 ```{r}
 #| label: fig-OzoneLandAreaRelation
@@ -375,6 +443,8 @@ ggplot(specificCountry) +
 Fadl, Mohamed. “Countries Population by Year 2020.” Kaggle, 19 June 2020, [www.kaggle.com/datasets/eng0mohamed0nabil/population-by-country-2020](http://www.kaggle.com/datasets/eng0mohamed0nabil/population-by-country-2020).
 
 Muzdadid, Hasib Al. “Global Air Pollution Dataset.” Kaggle, 8 Nov. 2022, [www.kaggle.com/datasets/hasibalmuzdadid/global-air-pollution-dataset?resource=download](http://www.kaggle.com/datasets/hasibalmuzdadid/global-air-pollution-dataset?resource=download).
+
+Reyes Becerra, Natalia. “Ozone Pollution Is Getting Worse and Increased Wildfires May Be to Blame.” *American Lung Association*, American Lung Association, 5 May 2025, www.lung.org/blog/ozone-pollution-caused-by-wildfires.
 
 “Wheel of Names.” Wheel of Names, wheelofnames.com/. Accessed 4 May 2025.
 
