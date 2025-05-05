@@ -4,7 +4,9 @@ An analysis of global pollution and population datasets to better understand dif
 
 ## Overview
 
-Expand on those introductory sentences with a brief but informative description of your project's purpose and goals. This section should help visitors decide whether they should dig deeper into your repo/project.
+This project explores air pollution across the globe by analyzing the relationship between population distribution and pollutant levels in six randomly selected countries (Australia, Brazil, Canada, China, France, and South Africa). Using two publicly available datasets from Kaggle, our analysis focuses on key air quality indicators such as Carbon Monoxide, Ozone, Nitrogen Dioxide, and Particulate Matter, along with country-level population information.
+
+Through data wrangling and visualizations in R, our team aims to find how urbanization, land area, and specific pollutants influence a country's overall Air Quality Index (AQI). Our goal is to make complex global pollution trends more understandable and visually accessible, while following FAIR and CARE principles to ensure ethical and inclusive research practices.
 
 ### Interesting Insight
 
@@ -16,7 +18,11 @@ Use this section to explain the structure of your repo. This should help visitor
 
 ## Data Sources and Acknowledgements
 
-Be sure to list where you got any data used within the project. Be sure to acknowledge any one whose work or elements you're drawing upon.
+Fadl, Mohamed. “Countries Population by Year 2020.” Kaggle, 19 June 2020, www.kaggle.com/datasets/eng0mohamed0nabil/population-by-country-2020. 
+
+Muzdadid, Hasib Al. “Global Air Pollution Dataset.” Kaggle, 8 Nov. 2022, www.kaggle.com/datasets/hasibalmuzdadid/global-air-pollution-dataset?resource=download.
+
+“Wheel of Names.” Wheel of Names, wheelofnames.com/. Accessed 4 May 2025. 
 
 ## Authors
 
