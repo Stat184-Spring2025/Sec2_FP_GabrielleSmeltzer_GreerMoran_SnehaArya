@@ -172,7 +172,7 @@ In researching the relationship between Pollution/Air Quality and Population, th
 #| label: fig-CountryAQI
 ##Create Comparison Visuals
 
-ggplot(specificCountry) +
+CountryAQI <- ggplot(specificCountry) +
   aes(x = Country, fill = AQI.Category) +
   geom_bar() +
   scale_fill_brewer(palette = "RdPu", direction = 1) +
@@ -191,7 +191,7 @@ ggplot(specificCountry) +
     plot.caption = element_text(hjust = 0.5)
   )
  
-
+CountryAQI
 ```
 
 {{< pagebreak >}}
@@ -208,7 +208,7 @@ When looking at the relationship between AQI Value and Urban Populations it was 
 ## (or just inbetween tidypopPoll and specificCountry in your first code chunk)
 ### do: tidypopPoll$Urban.Pop.. <- parse_number(tidypopPoll$Urban.Pop..)
 
-  
+### I like the other visual u have tho, I'm using it for the readMe. If you make both, just check that the figures are labeled properly
 specificCountry %>%
   ggplot(
    aes(
@@ -235,7 +235,8 @@ specificCountry %>%
 
 ```{r}
 #| label: fig-UrbanpopulationAQI
-specificCountry %>%
+
+UrbanPopulationAQI <- specificCountry %>%
  filter(AQI.Value >= 10L & AQI.Value <= 350L) %>%
  ggplot() +
   aes(x = AQI.Value, fill = Urban.Pop..) +
@@ -253,6 +254,8 @@ specificCountry %>%
     hjust = 0.5)
   ) +
   facet_wrap(vars(Country))
+
+UrbanPopulationAQI
 ```
 
 {{< pagebreak >}}
@@ -263,7 +266,8 @@ To further evaluate the relationship between air quality and pollution, it is vi
 
 ```{r}
 #| label: fig-OzoneLandAreaRelation
-ggplot(specificCountry) +
+
+OzoneLandAreaFig <- ggplot(specificCountry) +
   aes(
     x = Ozone.AQI.Value,
     y = Ozone.AQI.Category,
@@ -287,7 +291,7 @@ ggplot(specificCountry) +
   ) +
   facet_wrap(vars(Country))
 
-
+OzoneLandAreaFig
 ```
 
 {{< pagebreak >}}
@@ -401,7 +405,7 @@ tidyAQIdf <- cleanAQIdata %>%
 #AQI Value by Pollutant Value Scatterplots
 ## Create facetted scatterplots using ggplot2
 
-ggplot(
+PollutantLMPlot <- ggplot(
   data = tidyAQIdf,
   mapping = aes(
     x = Pollutant_Value,
@@ -424,6 +428,8 @@ ggplot(
     scale_color_manual(
       values = c("steelblue", "yellow3", "purple3", "red3")) +
     theme_minimal()
+
+PollutantLMPlot
 ```
 
 # **AQI Value by Each Pollutant**
@@ -480,6 +486,15 @@ Key Insights:
 -   The most influential pollutant impacting air quality index given multiple pollutants is particulate matter with diameter 2.5 micrometers or less (PM), which has a regression coefficient of 0.980
 
 {{< pagebreak >}}
+
+```{r}
+
+ggsave("CountryAQI.png", plot = CountryAQI, width = 6, height = 4, dpi = 300)
+ggsave("UrbanPopulationAQI.png", plot = UrbanPopulationAQI, width = 6, height = 4, dpi = 300)
+ggsave("OzoneLandAreaFig.png", plot = OzoneLandAreaFig, width = 6, height = 4, dpi = 300)
+ggsave("PollutantLMPlot.png", plot = PollutantLMPlot, width = 6, height = 4, dpi = 300)
+
+```
 
 # **Data Sources and Acknowledgement**
 
