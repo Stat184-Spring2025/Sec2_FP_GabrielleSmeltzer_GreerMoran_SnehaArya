@@ -243,9 +243,10 @@ UrbanPopulationAQI <- specificCountry %>%
   geom_histogram(bins = 30L) +
   scale_fill_hue(direction = 1) +
   labs(
-    x = "AQI Value Range",
-    y = "AQI Count",
-    title = "Relationship between AQI Value & Urban Population"
+    x = "AQI Value",
+    y = "Count of each AQI Measure",
+    title = "AQI Measure in each country",
+    subtitle = "Urban population percentage for each country included"
   ) +
   theme_minimal() +
   theme(
