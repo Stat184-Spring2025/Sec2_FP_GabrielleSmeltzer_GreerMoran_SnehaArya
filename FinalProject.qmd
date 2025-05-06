@@ -5,7 +5,7 @@ date: "April 24, 2025"
 date-modified: now
 format:
   pdf:
-    toc: false
+    toc: true
     number-sections: false
     number-depth: 5
     fig-align: center
@@ -99,23 +99,14 @@ A case is a specific global location.
 We chose to focus on the values from each pollutant (CO, Ozone, NO2, & PM2.5), the overall AQI Value and Category, Land Area (Km), and Urban Population. These attributes were parts of our original datasets. The datasets were then combined and cleaned to represent a smaller case set so that comparisons would be easier attained.
 
 The pollutants can be properly explained as:
--   Carbon Monoxide (CO), 
--   Ozone
--   Nitrogen Dioxide (NO2)
--   Particulate Matter with diameter 2.5 micrometers or less (PM),
 
-## **Graphics Table of Contents**
+\- Carbon Monoxide (CO), toxic gas from incomplete combustion.
 
--   Pollutant Influence on AQI:
-    -   @fig-AQIModel
--   Pollutant Values on Air Quality Measure:
-    -   @fig-PollutantValue
--   Selected Countries & their Air Quality Measurements:
-    -   @fig-CountryAQI
--   Urban Population Rate Influence on Air Quality per Generated Countries:
-    -   @fig-UrbanpopulationAQI
--   Land Area Influence on Ozone Layer Pollutants per Generated Countries:
-    -   @fig-OzoneLandAreaRelation
+\- Ozone, reactive gas that is a large component in smog.
+
+\- Nitrogen Dioxide (NO2), pollutant sourced from burning fuel.
+
+\- Particulate Matter with diameter 2.5 micrometers or less (PM), small harmful particles also produced from burning fuel.
 
 {{< pagebreak >}}
 
@@ -136,196 +127,6 @@ library(ggplot2)
 library(kableExtra)
 
 ```
-
-```{r}
-
-#| label: Data Wrangling Code for Global Air Pollution
-#| lst-label: Global Air Pollution, Data Wrangling
-#| lst-cap: "Rename Needed Columns"
-
-
-# Wrangle Air Pollution Data ---
-
-## Get Correct Column Names ---
-### Get Specific Data Frame of Correct Column Names
-
-
-globalData <- read.csv("statproject.csv")
-
-cleanAQIdata <- globalData %>%
-  rename(c(
-    AQI = "AQI.Value",
-    CO = "CO.AQI.Value",
-    Ozone = "Ozone.AQI.Value",
-    NO2 = "NO2.AQI.Value",
-    PM = "PM2.5.AQI.Value"
-    )
-    )
-
-aqiModel <- lm(AQI ~ CO + Ozone + NO2 + PM, data = cleanAQIdata)
-aqiSummary <- summary(aqiModel)
-
-
-```
-
-{{< pagebreak >}}
-
-```{r}
-#| label: tbl-SimpleRegressionvisual
-model_CO <- lm(AQI ~ CO, data = cleanAQIdata)
-co_coeff <- coef(model_CO)[2]
-co_pValue <- summary(model_CO)$coefficients[2,4]
-co_r_squared <- summary(model_CO)$r.squared
-
-model_ozone <- lm(AQI ~ Ozone, data = cleanAQIdata)
-ozone_coeff <- coef(model_ozone)[2]
-ozone_pValue <- summary(model_ozone)$coefficients[2,4]
-ozone_r_squared <- summary(model_ozone)$r.squared
-
-model_NO2 <- lm(AQI ~ NO2, data = cleanAQIdata)
-no2_coeff <- coef(model_NO2)[2]
-no2_pValue <- summary(model_NO2)$coefficients[2,4]
-no2_r_squared <- summary(model_NO2)$r.squared
-
-model_PM <- lm(AQI ~ PM, data = cleanAQIdata)
-pm_coeff <- coef(model_PM)[2]
-pm_pValue <- summary(model_PM)$coefficients[2,4]
-pm_r_squared <- summary(model_PM)$r.squared
-
-# Create table
-
-simple_regr_table <-data.frame(
-  Pollutant_Name = c("Carbon Monoxide", "Ozone", "Nitrogen Dioxide", "Particulate Matter"),
-  Coefficient = c(co_coeff, ozone_coeff, no2_coeff, pm_coeff),
-  p_value = c(co_pValue, ozone_pValue, no2_pValue, pm_pValue),
-  R_squared = c(co_r_squared, ozone_r_squared, no2_r_squared, pm_r_squared)
-)
-
-kable(
-  simple_regr_table,
-  caption = "Simple Linear Regression Table: Pollutant on AQI",
-  digits = 4,
-  format = "latex") %>%
-  kable_styling(position = "center")
-  
-```
-
-{{< pagebreak >}}
-
-# **Simple Linear Regression for Pollutant on AQI**
-
-Simple Linear Regression Summary of each individual Pollutant on AQI
-
-This table, @tbl-Regressionvisual, provides an overview of the simple linear regression summary each pollutant (CO, Ozone, NO2, and PM) has on the measured AQI value along different cities across the globe. This offers valuable context abut how air quality index (AQI) is measured, how the pollutants influence the strength of AQI on their own. The regression summary includes statistics of estimated coefficient, p-value, and r-squared.
-
-Key Insights:
-
--   From first glance, the strongest relationship in terms of increasing pollutant value is the relationship between Carbon Monoxide (CO) and AQI with a positive magnitude of ~13.175
-
--   However, the most useful aspect of the table on its own is the R-squared value. A near 1 value means that air quality index is best explained by the pollutant one its own. This is true for particulate matter with diameter 2.5 micrometers or less (PM) that has an r-squared of ~0.969
-
--   The r-squared values for the other pollutants are low, near-zero which means they individually have little impact on air quality index. However, since they have p-values much lower than the average significance level of 5% the pollutants could still affect air quality index but not by itself.
-
-```{r}
-#| label: fig-PollutantLMPlot
-# AQI Value by Pollutant Value Data Frame
-## Tidy data frame so that Pollutant is a column
-  
-tidyAQIdf <- cleanAQIdata %>%
-  pivot_longer(
-    cols = c(
-      CO,
-      Ozone,
-      NO2,
-      PM
-    ),
-    names_to = "Pollutant",
-    values_to = "Pollutant_Value"
-  )
-
-#AQI Value by Pollutant Value Scatterplots
-## Create facetted scatterplots using ggplot2
-
-ggplot(
-  data = tidyAQIdf,
-  mapping = aes(
-    x = Pollutant_Value,
-    y = AQI,
-    color = Pollutant
-    )
-  )+
-    geom_point(alpha = 0.4) +
-   geom_smooth(
-     method = "lm",
-     color = "black",
-     se = TRUE
-     ) +
-    facet_wrap(~ Pollutant, scales = "free_x") +
-    labs(
-      title = "Value of Pollutant on AQI Measure",
-      x = "Pollutant Value",
-      y = "Air Quality Index (AQI) Value"
-    ) +
-    scale_color_manual(
-      values = c("steelblue", "yellow3", "purple3", "red3")) +
-    theme_minimal()
-```
-
-{{< pagebreak >}}
-
-# **AQI Value by Each Pollutant**
-
-Figure BLANK - Scatterplot of Each Pollutant on AQI Measure
-
-This figure (@fig-PollutantValue) displays each air quality index (AQI) by the value of each pollutant. This scatterplot identifies the spread that creates the slope of each Pollutant on AQI measure. The regression line in black amounts to the same slope given from the Coefficient column in @tbl-Regressionvisual.
-
-Key Insights:
-
--   The tight, constant cluster along the relationship between particulate matter with diameter 2.5 micrometers or less (PM) and air quality index (AQI) indicates a strong relationship with little variance. Air quality index consistently increases as particulate matter increases within a strong linear relationship.
-
--   There is strong variation within ozone above the slope line reflecting a weak linear relationship with air quality index. This indicates that because the linear relationship is not strong, their relationship is not a two-way streak and can even underestimate air quality index if based on only ozone. Further, this is not a good predictor of AQI on it's own.
-
--   Most carbon monoxide (CO) values are small, hence the cluster in the bottom left-hand corner of the CO facet. Countries within this data set have low carbon monoxide values, making a linear regression model not ideal. However, despite a low value the regression line appears close to 1. This indicates that an overall relationship is still present in a minor way, with non-constant error variance held in concern.
-
--   Nitrogen dioxide (NO2) has a near zero regression line. Further, there is little impact on the measured air quality index. Additionally, a cone-shaped spread of the glyphs representing each country would indicate a violation of the equal variance (heteroscedasticity). In this case, nitrogen dioxide is not properly predictive of air quality index until nitrogen dioxide is measured at a higher value.
-
-
-```{r}
-#| label: tbl-MultipleRegression
-# Create Table Summary Visualization ---
-
-aqiModel <- as.data.frame(aqiSummary$coefficients) ## create data frame
-aqiModel$Pollutant <- rownames(aqiModel)
-aqiModel <- aqiModel[, c("Pollutant", "Estimate", "Pr(>|t|)")]
-colnames(aqiModel) <- c("Pollutant", "Regr. Coefficient", "p-value")
-rownames(aqiModel) <- NULL
-
-aqiModel <- aqiModel[-1, ]
-
-kable(
-  aqiModel,
-  caption = "Linear Regression Summary for Pollutants impact on AQI",
-  digits = 5,
-  format = "latex"
-  ) %>%
-  kable_styling(
-    position = "center"
-  )
-
-
-```
-
-{{< pagebreak >}}
-
-# **Multiple Linear Regression for Pollutant on AQI**
-
-This table, @tbl-MultipleRegression, displays the coefficients and p-values for each pollutant's impact on air quality index with the other pollutants held constant. While the model does individually evaluate the pollutant's individual impact on air quality measure, this multiple regression model uses a new intercept gathered from factoring in all the other pollutants. The new intercept causes the slope/regression coefficient to change from its simple linear regression value in order to account for all of the new attributes included.
-
-Key Insights:
-
--   Carbon monoxide (CO), now has a p-value that is statistically insignificant at a 5% significance level. While we are not running a hypothesis test this is important to note. Since further surveying the data from different cities in different countries, this leads us to observe that with other pollutants factored in, air quality index cannot be properly predicted by carbon monoxide.
-
--   The most influential pollutant impacting air quality index given multiple pollutants is particulate matter with diameter 2.5 micrometers or less (PM), which has a regression coefficient of 0.980 
 
 ```{r}
 #| label: SpecificCountry
@@ -358,7 +159,6 @@ specificCountry <- tidypopPoll %>%
   filter(Country %in% filteredCountry)
 
 ```
-
 
 {{< pagebreak >}}
 
@@ -489,6 +289,195 @@ ggplot(specificCountry) +
 
 
 ```
+
+{{< pagebreak >}}
+
+```{r}
+
+#| label: Data Wrangling Code for Global Air Pollution
+#| lst-label: Global Air Pollution, Data Wrangling
+#| lst-cap: "Rename Needed Columns"
+
+
+# Wrangle Air Pollution Data ---
+
+## Get Correct Column Names ---
+### Get Specific Data Frame of Correct Column Names
+
+
+globalData <- read.csv("statproject.csv")
+
+cleanAQIdata <- globalData %>%
+  rename(c(
+    AQI = "AQI.Value",
+    CO = "CO.AQI.Value",
+    Ozone = "Ozone.AQI.Value",
+    NO2 = "NO2.AQI.Value",
+    PM = "PM2.5.AQI.Value"
+    )
+    )
+
+aqiModel <- lm(AQI ~ CO + Ozone + NO2 + PM, data = cleanAQIdata)
+aqiSummary <- summary(aqiModel)
+
+
+```
+
+{{< pagebreak >}}
+
+```{r}
+#| label: tbl-SimpleLinearRegressionTable
+#| tbl-cap: "Simple Linear Regression Table: Pollutant on AQI"
+model_CO <- lm(AQI ~ CO, data = cleanAQIdata)
+co_coeff <- coef(model_CO)[2]
+co_pValue <- summary(model_CO)$coefficients[2,4]
+co_r_squared <- summary(model_CO)$r.squared
+
+model_ozone <- lm(AQI ~ Ozone, data = cleanAQIdata)
+ozone_coeff <- coef(model_ozone)[2]
+ozone_pValue <- summary(model_ozone)$coefficients[2,4]
+ozone_r_squared <- summary(model_ozone)$r.squared
+
+model_NO2 <- lm(AQI ~ NO2, data = cleanAQIdata)
+no2_coeff <- coef(model_NO2)[2]
+no2_pValue <- summary(model_NO2)$coefficients[2,4]
+no2_r_squared <- summary(model_NO2)$r.squared
+
+model_PM <- lm(AQI ~ PM, data = cleanAQIdata)
+pm_coeff <- coef(model_PM)[2]
+pm_pValue <- summary(model_PM)$coefficients[2,4]
+pm_r_squared <- summary(model_PM)$r.squared
+
+# Create table
+
+simple_regr_table <-data.frame(
+  Pollutant_Name = c("Carbon Monoxide", "Ozone", "Nitrogen Dioxide", "Particulate Matter"),
+  Coefficient = c(co_coeff, ozone_coeff, no2_coeff, pm_coeff),
+  p_value = c(co_pValue, ozone_pValue, no2_pValue, pm_pValue),
+  R_squared = c(co_r_squared, ozone_r_squared, no2_r_squared, pm_r_squared)
+)
+
+kable(
+  simple_regr_table,
+  digits = 4,
+  format = "latex") %>%
+  kable_styling(position = "center")
+  
+```
+
+# **Simple Linear Regression for Pollutant on AQI**
+
+Simple Linear Regression Summary of each individual Pollutant on AQI
+
+This table, @tbl-SimpleLinearRegressionTable, provides an overview of the simple linear regression summary each pollutant (CO, Ozone, NO2, and PM) has on the measured AQI value along different cities across the globe. This offers valuable context abut how air quality index (AQI) is measured, how the pollutants influence the strength of AQI on their own. The regression summary includes statistics of estimated coefficient, p-value, and r-squared.
+
+Key Insights:
+
+-   From first glance, the strongest relationship in terms of increasing pollutant value is the relationship between Carbon Monoxide (CO) and AQI with a positive magnitude of \~13.175
+
+-   However, the most useful aspect of the table on its own is the R-squared value. A near 1 value means that air quality index is best explained by the pollutant one its own. This is true for particulate matter with diameter 2.5 micrometers or less (PM) that has an r-squared of \~0.969
+
+-   The r-squared values for the other pollutants are low, near-zero which means they individually have little impact on air quality index. However, since they have p-values much lower than the average significance level of 5% the pollutants could still affect air quality index but not by itself.
+
+{{< pagebreak >}}
+
+```{r}
+#| label: fig-PollutantLMPlot
+# AQI Value by Pollutant Value Data Frame
+## Tidy data frame so that Pollutant is a column
+  
+tidyAQIdf <- cleanAQIdata %>%
+  pivot_longer(
+    cols = c(
+      CO,
+      Ozone,
+      NO2,
+      PM
+    ),
+    names_to = "Pollutant",
+    values_to = "Pollutant_Value"
+  )
+
+#AQI Value by Pollutant Value Scatterplots
+## Create facetted scatterplots using ggplot2
+
+ggplot(
+  data = tidyAQIdf,
+  mapping = aes(
+    x = Pollutant_Value,
+    y = AQI,
+    color = Pollutant
+    )
+  )+
+    geom_point(alpha = 0.4) +
+   geom_smooth(
+     method = "lm",
+     color = "black",
+     se = TRUE
+     ) +
+    facet_wrap(~ Pollutant, scales = "free_x") +
+    labs(
+      title = "Value of Pollutant on AQI Measure",
+      x = "Pollutant Value",
+      y = "Air Quality Index (AQI) Value"
+    ) +
+    scale_color_manual(
+      values = c("steelblue", "yellow3", "purple3", "red3")) +
+    theme_minimal()
+```
+
+# **AQI Value by Each Pollutant**
+
+Figure 4 - Scatterplot of Each Pollutant on AQI Measure
+
+This figure (@fig-PollutantLMPlot) displays each air quality index (AQI) by the value of each pollutant. This scatterplot identifies the spread that creates the slope of each Pollutant on AQI measure. The regression line in black amounts to the same slope given from the Coefficient column in @tbl-SimpleLinearRegressionTable.
+
+Key Insights:
+
+-   The tight, constant cluster along the relationship between particulate matter with diameter 2.5 micrometers or less (PM) and air quality index (AQI) indicates a strong relationship with little variance. Air quality index consistently increases as particulate matter increases within a strong linear relationship.
+
+-   There is strong variation within ozone above the slope line reflecting a weak linear relationship with air quality index. This indicates that because the linear relationship is not strong, their relationship is not a two-way streak and can even underestimate air quality index if based on only ozone. Further, this is not a good predictor of AQI on it's own.
+
+-   Most carbon monoxide (CO) values are small, hence the cluster in the bottom left-hand corner of the CO facet. Countries within this data set have low carbon monoxide values, making a linear regression model not ideal. However, despite a low value the regression line appears close to 1. This indicates that an overall relationship is still present in a minor way, with non-constant error variance held in concern.
+
+-   Nitrogen dioxide (NO2) has a near zero regression line. Further, there is little impact on the measured air quality index. Additionally, a cone-shaped spread of the glyphs representing each country would indicate a violation of the equal variance (heteroscedasticity). In this case, nitrogen dioxide is not properly predictive of air quality index until nitrogen dioxide is measured at a higher value.
+
+{{< pagebreak >}}
+
+```{r}
+#| label: tbl-MultipleRegression
+#| tbl-cap: "Linear Regression Summary for Pollutants impact on AQI"
+# Create Table Summary Visualization ---
+
+aqiModel <- as.data.frame(aqiSummary$coefficients) ## create data frame
+aqiModel$Pollutant <- rownames(aqiModel)
+aqiModel <- aqiModel[, c("Pollutant", "Estimate", "Pr(>|t|)")]
+colnames(aqiModel) <- c("Pollutant", "Regr. Coefficient", "p-value")
+rownames(aqiModel) <- NULL
+
+aqiModel <- aqiModel[-1, ]
+
+kable(
+  aqiModel,
+  digits = 5,
+  format = "latex"
+  ) %>%
+  kable_styling(
+    position = "center"
+  )
+
+
+```
+
+# **Multiple Linear Regression for Pollutant on AQI**
+
+This table, @tbl-MultipleRegression, displays the coefficients and p-values for each pollutant's impact on air quality index with the other pollutants held constant. While the model does individually evaluate the pollutant's individual impact on air quality measure, this multiple regression model uses a new intercept gathered from factoring in all the other pollutants. The new intercept causes the slope/regression coefficient to change from its simple linear regression value in order to account for all of the new attributes included.
+
+Key Insights:
+
+-   Carbon monoxide (CO), now has a p-value that is statistically insignificant at a 5% significance level. While we are not running a hypothesis test this is important to note. Since further surveying the data from different cities in different countries, this leads us to observe that with other pollutants factored in, air quality index cannot be properly predicted by carbon monoxide.
+
+-   The most influential pollutant impacting air quality index given multiple pollutants is particulate matter with diameter 2.5 micrometers or less (PM), which has a regression coefficient of 0.980
 
 {{< pagebreak >}}
 
