@@ -22,6 +22,8 @@ Fadl, Mohamed. “Countries Population by Year 2020.” Kaggle, 19 June 2020, ww
 
 Muzdadid, Hasib Al. “Global Air Pollution Dataset.” Kaggle, 8 Nov. 2022, www.kaggle.com/datasets/hasibalmuzdadid/global-air-pollution-dataset?resource=download.
 
+Reyes Becerra, Natalia. “Ozone Pollution Is Getting Worse and Increased Wildfires May Be to Blame.” *American Lung Association*, American Lung Association, 5 May 2025, www.lung.org/blog/ozone-pollution-caused-by-wildfires.
+
 “Wheel of Names.” Wheel of Names, www.wheelofnames.com/. Accessed 4 May 2025. 
 
 ## Authors
