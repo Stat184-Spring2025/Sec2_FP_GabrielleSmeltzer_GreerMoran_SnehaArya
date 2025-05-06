@@ -32,6 +32,7 @@ Sneha Arya:
 An Applied Data Science student working to strengthen skills in data analysis, R programming, and exploring real-world problems through statistical analysis and visualization. Feel free to contact me at sfa5848@psu.edu with relevant inquiries.
 
 Greer Moran:
+An Eberly College of Science student applying R programming skills and statistical tools to uncover trends and patterns in environmental data. For any questions about this project, please reach out at gam5851@psu.edu
 
 Gabrielle Smeltzer: 
 A stat 184 student who is working on her final project to have a better understanding on the usage of R studio and its functions, usage, and importance within the field of statistics. If there are any inquiries on the Repo feel free to contact me. Contact information: gms6066@psu.edu
