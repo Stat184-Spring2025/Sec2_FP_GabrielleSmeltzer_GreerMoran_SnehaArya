@@ -350,10 +350,6 @@ tidypopPoll <- populationPollution %>%
   filter(if_all(Population..2020., ~ !is.na(.)))
 
 
-tidypopPoll <- tidypopPoll %>%
-  mutate(Urban.Pop.. = parse_number(Urban.Pop..)) %>%
-  drop_na(Urban.Pop..)
-
 
 ##Filter our data to a country from each continent, excluding Antarctica
 
@@ -406,7 +402,13 @@ When looking at the relationship between AQI Value and Urban Populations it was 
 
 ```{r}
 
+# HI GABI THIS WAS THE EXAMPLE CODE FOR IF IT WAS PARSED NUMERIC, FEEL FREE TO DELETE
 
+# TO SEE NUMERIC, MAKE NEW CODE AT LINE 352 
+## (or just inbetween tidypopPoll and specificCountry in your first code chunk)
+### do: tidypopPoll$Urban.Pop.. <- parse_number(tidypopPoll$Urban.Pop..)
+
+  
 specificCountry %>%
   ggplot(
    aes(
