@@ -8,13 +8,13 @@ Our team explores air pollution across the globe by analyzing the relationship b
 
 Through data wrangling and visualizations in R, our team aims to find how urbanization, land area, and specific pollutants influence a country's overall Air Quality Index (AQI). Our goal is to make complex global pollution trends more understandable and visually accessible, while following FAIR and CARE principles to ensure ethical and inclusive research practices.
 
-### Interesting Insight
+### Key Insight
 
 This is optional but highly recommended. You'll include one interesting insight from your project as part of the README. This insight is most effective when you include a visual. Keep in mind that this visual must be included as an image file (e.g., JPG, PNG, etc.). You can export plots created with `{ggplot2}` by using the function `ggsave`.
 
 ## Repo Structure
 
-Use this section to explain the structure of your repo. This should help visitors quickly figure out where they should look to find certain elements. Further, you can use this space to highlight and briefly explain important/key files in the repo.
+The opening page has all the files one should open in our main branch. The upper lefthand dropdown box below our repository name, Sec2_FP_GabrielleSmeltzer_GreerMoran_SnehaArya, initally displays it is open in the main branch. The necessary files were all updated from our working branches, developmental and depository_readME, in order to save our progess before this final form was created. Our repository is public in order for open access to our classmates and professor in Stat 184.
 
 ## Data Sources and Acknowledgements
 
@@ -32,7 +32,7 @@ Sneha Arya:
 An Applied Data Science student working to strengthen skills in data analysis, R programming, and exploring real-world problems through statistical analysis and visualization. Feel free to contact me at sfa5848@psu.edu with relevant inquiries.
 
 Greer Moran:
-An Eberly College of Science student applying R programming skills and statistical tools to uncover trends and patterns in environmental data. For any questions about this project, please reach out at gam5851@psu.edu
+An Applied Statistics student in Stat 184 strengthening her data tidying, wrangling, and visualization skills through collaborating on exploratory data analysis. Worked with Github desktop and RStudio, making several commits to the developmental branches. Please contact me at gam5851@psu.edu
 
 Gabrielle Smeltzer: 
 A stat 184 student who is working on her final project to have a better understanding on the usage of R studio and its functions, usage, and importance within the field of statistics. If there are any inquiries on the Repo feel free to contact me. Contact information: gms6066@psu.edu
