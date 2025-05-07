@@ -1,7 +1,6 @@
-# Project Title
+# Air Pollution Across the Globe
 
-Write a 1-2 sentences that quickly and clearly convey what your repo is for.
-
+An analysis of global pollution and population datasets to better understand different factors when it comes to air quality.
 
 ## Overview
 
@@ -21,4 +20,9 @@ Be sure to list where you got any data used within the project. Be sure to ackno
 
 ## Authors
 
-Give information about who are the authors of the project and how people can get in touch if they have questions.
+Sneha Arya:
+
+Greer Moran:
+
+Gabrielle Smeltzer: 
+A stat 184 student who is working on her final project to have a better understanding on the usage of R studio and its functions, usage, and importance within the field of statistics. If there are any inquiries on the Repo feel free to contact me. Contact information: gms6066@psu.edu
