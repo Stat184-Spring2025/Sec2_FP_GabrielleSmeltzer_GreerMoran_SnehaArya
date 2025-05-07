@@ -28,9 +28,9 @@ execute:
 
 This research focuses on air pollution across the globe, a topic that directly impacts society's health, the climate, and quality of life. As pollution levels are rising exponentially worldwide, it is vital to understand relationships between population distribution and the severity of air pollution. Using a main dataset regarding Global Air Quality and a secondary dataset on global city-level populations, our research centers on observing pollution and population data to explore these patterns. Since population values in our secondary dataset were provided by city, we aggregated them to generate total population figures by country. We chose to visualize data at the country level to reduce clutter and improve clarity among visualizations, allowing for a more accessible and focused exploration of global air pollution patterns.
 
-Another central focus of our project is to examine whether urban population percentage plays a role in pollution severity. To do this, we plan to implement a histogram visualization that compares AQI value distributions in relation to levels of urban population across the six countries, helping us identify patterns linked to urbanization. Furthermore, we use a grouped bar graph to present the frequency of AQI categories by country, enabling straightforward comparisons of pollution severity across regions. Lastly, we analyze ozone AQI values in relation to land area through a boxplot to explore how physical geography may intersect with pollution levels.
+Another central focus of our project is investigating how specific pollutant values (Carbon Monoxide, Ozone, Nitrogen Dioxide, and Particulate Matter) contribute to a country's overall Air Quality Index (AQI). To explore this, we apply linear regression modeling and plan to visualize the results through a regression summary table and a slope plot illustrating each pollutant’s influence on AQI. In addition, we plan to use faceted scatter plots to compare pollutant values to AQI, offering a clear view of each variable's relationship with air quality.
 
-We also aim to investigate how specific pollutant values (Carbon Monoxide, Ozone, Nitrogen Dioxide, and Particulate Matter) contribute to a country's overall Air Quality Index (AQI). To explore this, we apply linear regression modeling and plan to visualize the results through a regression summary table and a slope plot illustrating each pollutant’s influence on AQI. In addition, we plan to use faceted scatter plots to compare pollutant values to AQI, offering a clear view of how each variable individually correlates with air quality.
+We also aim to examine whether urban population percentage plays a role in pollution severity. To do this, we plan to implement a histogram visualization that compares AQI value distributions in relation to levels of urban population across the six countries, helping us identify patterns linked to urbanization. Furthermore, we use a grouped bar graph to present the frequency of AQI categories by country, enabling straightforward comparisons of pollution severity across regions. Lastly, we analyze ozone AQI values in relation to land area through a boxplot to explore how physical geography may intersect with pollution levels.
 
 Overall, this is not an exhaustive list of the questions we aim to explore, as the dataset contains many overlapping features that may reveal new insights. Our goal is to use structured analysis and clear, accessible visualizations to better understand global air quality trends and their potential implications for effects on the environment and public health.
 
@@ -50,7 +50,7 @@ Our data sources are openly available. Researchers can find the original datsets
 
 ### **Accessible**
 
-Since the datasets have open licensing on Kaggle with a Creative Commons license, the original data sources have a long term usability. By documenting the data cleaning and analysis steps, other people can replicate the work or conduct further research.
+Both datasets used are publicly accessible without restrictions, which supports the transparency and reproducibility aspects of accessibility. All sources are cited enabling direct access for viewers.
 
 ### **Interoperable**
 
@@ -342,12 +342,18 @@ aqiSummary <- summary(aqiModel)
 {{< pagebreak >}}
 
 ```{r}
+<<<<<<< HEAD
+#| label: tbl-Regressionvisual
+#| html-table-processing: none
+# Create Table Summary Visualization ---
+=======
 #| label: tbl-SimpleLinearRegressionTable
 #| tbl-cap: "Simple Linear Regression Table: Pollutant on AQI"
 model_CO <- lm(AQI ~ CO, data = cleanAQIdata)
 co_coeff <- coef(model_CO)[2]
 co_pValue <- summary(model_CO)$coefficients[2,4]
 co_r_squared <- summary(model_CO)$r.squared
+>>>>>>> 327d9ad740a08285a46bf5cc6a72e559615d6116
 
 model_ozone <- lm(AQI ~ Ozone, data = cleanAQIdata)
 ozone_coeff <- coef(model_ozone)[2]
@@ -366,11 +372,66 @@ pm_r_squared <- summary(model_PM)$r.squared
 
 # Create table
 
+<<<<<<< HEAD
+# Pollutant Influence on Air Quality Index
+
+Figure 1 - @fig-AQIModel
+
+Linear Regression Summary of Pollutant on AQI
+
+This table, @tbl-Regressionvisual provides an overview of the regression summary each pollutant (CO, Ozone, NO2, and PM) has on the measured AQI value along different cities across the globe. This offers valuable context abut how Air Quality Index (AQI) is measured, how the pollutants influence the strength of AQI. The regression summary includes statistics of estimated slope, standard error, t-value, and p-value.
+
+Key Insights:
+
+-   The estimated slope between Particle Matter with diameter 2.5 micrometers or less have a near 1.0 slope of regression line, at 0.98014, indicating they have a very strong relationship.
+
+-   The p-value of carbon monoxide (CO) is considerably above the average significance level of 5%, with a value of 0.66715. Despite lack of running a hypothesis test, CO would be considered a statistically insignificant pollutant on AQI measure since the statistic suggests there is a 50% chance that the observed results are due to chance.
+
+-   Both nitrogen dioxide and carbon monoxide, NO2 and CO, have near zero estimated slope values of -0.01350 and 0.01707 respectively. Further, the pollutants could have little impact on the air quality measure.
+
+{{< pagebreak >}}
+
+# Linear Regression Slope Evaluation for each Pollutant
+
+The figure(@fig-AQIModel) provides the estimated slope of each pollutant’s linear regression relationship with air quality index graphed as a single point. This plot of five points helps identify the difference among pollutants estimated slope measured outputted in Table 1.
+
+Key Insights:
+
+-   Particle matter with diameter 2.5 micrometers or less (PM) has a considerably stronger relationship with air quality index compared to the other pollutants.
+
+-   Both glyphs of nitrogen dioxide and carbon monoxide, NO2 and CO, lie closely to the zero line. Indicating a near-zero relationship with little to no impact on AQI.
+
+```{r}
+#| label: fig-AQIModel
+# 
+print(
+ggplot(
+  data = aqiModel, 
+  mapping = aes(
+    x = reorder(Pollutant, `Est. Slope`), 
+    y = `Est. Slope`,
+    color = Pollutant
+    )
+  ) +
+  geom_point(
+    size = 3
+    ) +
+  labs(
+    title = "Pollutant Influence on Air Quality Index",
+    x = "Pollutant",
+    y = "Slope Measure"
+  ) +
+  scale_color_manual(
+    values = c("black", "steelblue", "yellow3", "purple3", "red3")
+  )
+  + theme_minimal()
+=======
 simple_regr_table <-data.frame(
   Pollutant_Name = c("Carbon Monoxide", "Ozone", "Nitrogen Dioxide", "Particulate Matter"),
   Coefficient = c(co_coeff, ozone_coeff, no2_coeff, pm_coeff),
   p_value = c(co_pValue, ozone_pValue, no2_pValue, pm_pValue),
   R_squared = c(co_r_squared, ozone_r_squared, no2_r_squared, pm_r_squared)
+>>>>>>> 327d9ad740a08285a46bf5cc6a72e559615d6116
 )
 
 kable(
@@ -389,7 +450,11 @@ This table, @tbl-SimpleLinearRegressionTable, provides an overview of the simple
 
 Key Insights:
 
+<<<<<<< HEAD
+-   There is a strong positive relationship between particle matter with diameter 2.5 micrometers or less (PM) and air quality index (AQI). A higher particle matter consistently increases the measure of air quality index. 
+=======
 -   From first glance, the strongest relationship in terms of increasing pollutant value is the relationship between Carbon Monoxide (CO) and AQI with a positive magnitude of \~13.175
+>>>>>>> 327d9ad740a08285a46bf5cc6a72e559615d6116
 
 -   However, the most useful aspect of the table on its own is the R-squared value. A near 1 value means that air quality index is best explained by the pollutant one its own. This is true for particulate matter with diameter 2.5 micrometers or less (PM) that has an r-squared of \~0.969
 
@@ -422,9 +487,21 @@ PollutantLMPlot <- ggplot(
   mapping = aes(
     x = Pollutant_Value,
     y = AQI,
-    color = Pollutant
+    color = Pollutant,
+    group = Pollutant
     )
   )+
+<<<<<<< HEAD
+    geom_point() +
+  geom_smooth(
+    formula = y ~ x,
+    method = "lm",
+    color = "black",
+    se = FALSE
+  ) +
+   # geom_abline() +
+    facet_wrap(~ Pollutant, scales = "free") +
+=======
     geom_point(alpha = 0.4) +
    geom_smooth(
      method = "lm",
@@ -432,6 +509,7 @@ PollutantLMPlot <- ggplot(
      se = TRUE
      ) +
     facet_wrap(~ Pollutant, scales = "free_x") +
+>>>>>>> 327d9ad740a08285a46bf5cc6a72e559615d6116
     labs(
       title = "Value of Pollutant on AQI Measure",
       x = "Pollutant Value",
@@ -510,7 +588,9 @@ ggsave("PollutantLMPlot.png", plot = PollutantLMPlot, width = 6, height = 4, dpi
 
 # **Data Sources and Acknowledgement**
 
-Fadl, Mohamed. “Countries Population by Year 2020.” Kaggle, 19 June 2020, [www.kaggle.com/datasets/eng0mohamed0nabil/population-by-country-2020](http://www.kaggle.com/datasets/eng0mohamed0nabil/population-by-country-2020).
+Fadl, Mohamed. “Countries Population by Year 2020.” Kaggle, 19 June 2020,
+
+[www.kaggle.com/datasets/eng0mohamed0nabil/population-by-country-2020](http://www.kaggle.com/datasets/eng0mohamed0nabil/population-by-country-2020).
 
 Muzdadid, Hasib Al. “Global Air Pollution Dataset.” Kaggle, 8 Nov. 2022, [www.kaggle.com/datasets/hasibalmuzdadid/global-air-pollution-dataset?resource=download](http://www.kaggle.com/datasets/hasibalmuzdadid/global-air-pollution-dataset?resource=download).
 
@@ -518,7 +598,11 @@ Reyes Becerra, Natalia. “Ozone Pollution Is Getting Worse and Increased Wildfi
 
 “Wheel of Names.” Wheel of Names, [www.wheelofnames.com](http://www.wheelofnames.com) Accessed 4 May 2025.
 
+<<<<<<< HEAD
+# Code Appendix
+=======
 # **Code Appendix:**
+>>>>>>> 327d9ad740a08285a46bf5cc6a72e559615d6116
 
 ```{r codeAppend, ref.label=knitr::all_labels(), echo=TRUE, eval=FALSE}
 ```
