@@ -173,24 +173,39 @@ In researching the relationship between Pollution/Air Quality and Population, th
 ##Create Comparison Visuals
 
 CountryAQI <- ggplot(specificCountry) +
-  aes(x = Country, fill = AQI.Category) +
-  geom_bar() +
-  scale_fill_brewer(palette = "RdPu", direction = 1) +
+
+  aes(x = Country, y = AQI.Category, fill = AQI.Value) +
+
+  geom_tile() +
+
+  scale_fill_viridis_c(option = "magma", direction = -1) +
+
   labs(
-    x = "Country",
-    y = "Category Count",
-    title = "AQI Category by Country",
-    caption = "A count of each AQI category by country.",
-    fill = "AQI Categories"
+
+    y = "AQI Category",
+
+    title = "Air Pollution Severity by Country",
+
+    subtitle = "Air Quality Index ",
+
+    caption = "A heatmap displaying the countries AQI values and corresponding air quality category. "
+
   ) +
+
   theme_linedraw() +
+
   theme(
-    plot.title = element_text(size = 15L,
-    face = "bold",
-    hjust = 0.5),
-    plot.caption = element_text(hjust = 0.5)
+
+    axis.title.y = element_text(size = 10L,
+
+    hjust = 0),
+
+    axis.text.y = element_text(size = 6L),
+
+    axis.text.x = element_text(size = 7L)
+
   )
- 
+
 CountryAQI
 ```
 
@@ -200,38 +215,6 @@ CountryAQI
 
 When looking at the relationship between AQI Value and Urban Populations it was observed that the countries with a higher urban population rate had a large number of lower AQI values. This illustrates that there is a potential relationship between the Urban rate of living and pollution. The increased count of low AQI values indicates that the more people that live within the Urban Population, the lower the pollution rate will likely be (@fig-UrbanpopulationAQI). The x-axis represents the overall AQI Values gathered, and the y-axis shows the count of each AQI value occuring. Additionally, the visual is faceted into our six randomly generated countries, and the counts displayed are color coded to represent the Urban Populations for each country. As noted above, our team acknowledges that the datasets used have less data representing certain countries. Thus, Australia, Canada and South Africa have less data representing their case, whereas Brazil, China, and France have more data. So in conclusion, while the data may lack full representation of all major cities within each country, the visualization depicts that countries with more relevant urban population have less pollution.
 
-```{r}
-
-# HI GABI THIS WAS THE EXAMPLE CODE FOR IF IT WAS PARSED NUMERIC, FEEL FREE TO DELETE
-
-# TO SEE NUMERIC, MAKE NEW CODE AT LINE 352 
-## (or just inbetween tidypopPoll and specificCountry in your first code chunk)
-### do: tidypopPoll$Urban.Pop.. <- parse_number(tidypopPoll$Urban.Pop..)
-
-### I like the other visual u have tho, I'm using it for the readMe. If you make both, just check that the figures are labeled properly
-specificCountry %>%
-  ggplot(
-   aes(
-     x = Urban.Pop..,
-     y = AQI.Value
-     )
-   ) +
-  geom_point(alpha = 0.6, fill = "darkgreen") +
-  facet_wrap(~ Country) +
-  labs(
-    x = "Urban Population (%))",
-    y = "Air Quality Index (AQI)",
-    fill = "Urban Population (%)",
-    title = "AQI by Urban Population Percentage for each country"
-  ) +
-  theme_minimal() +
-  theme(
-    plot.title = element_text(size = 12L,
-    face = "bold",
-    hjust = 0.5)
-  )
-
-```
 
 ```{r}
 #| label: fig-UrbanpopulationAQI
@@ -269,27 +252,55 @@ To further evaluate the relationship between air quality and pollution, it is vi
 #| label: fig-OzoneLandAreaRelation
 
 OzoneLandAreaFig <- ggplot(specificCountry) +
+
   aes(
+
     x = Ozone.AQI.Value,
+
     y = Ozone.AQI.Category,
+
     fill = Land.Area..Km..
+
   ) +
+
   geom_boxplot() +
-  scale_fill_viridis_c(option = "plasma", direction = 1) +
+
+  scale_fill_distiller(palette = "RdYlGn", direction = 1) +
+
   labs(
-    x = "Ozone AQI Value",
-    y = "Ozone Category",
-    title = "Ozone Values in Relation to Land Area",
-    fill = "Land Area (km)"
+
+    x = "Ozone Value",
+
+    y = "Ozone Air Quality ",
+
+    title = "Ozone Values in Relation to Land Area"
+
   ) +
-  theme_gray() +
+
+  theme_linedraw() +
+
   theme(
-    plot.title = element_text(size = 15L,
-    face = "bold",
+
+    legend.position = "bottom",
+
+    legend.justification = "bottom",
+
+    plot.title = element_text(face = "bold",
+
     hjust = 0.5),
-    legend.text = element_text(face = "bold"),
-    legend.title = element_text(face = "bold")
+
+    axis.text.y = element_text(size = 7L,
+
+    angle = 6L),
+
+    axis.text.x = element_text(size = 6L),
+
+    legend.text = element_text(size = 5L),
+
+    legend.title = element_text(size = 7L)
+
   ) +
+
   facet_wrap(vars(Country))
 
 OzoneLandAreaFig
@@ -503,9 +514,9 @@ Fadl, Mohamed. “Countries Population by Year 2020.” Kaggle, 19 June 2020, [w
 
 Muzdadid, Hasib Al. “Global Air Pollution Dataset.” Kaggle, 8 Nov. 2022, [www.kaggle.com/datasets/hasibalmuzdadid/global-air-pollution-dataset?resource=download](http://www.kaggle.com/datasets/hasibalmuzdadid/global-air-pollution-dataset?resource=download).
 
-Reyes Becerra, Natalia. “Ozone Pollution Is Getting Worse and Increased Wildfires May Be to Blame.” *American Lung Association*, American Lung Association, 5 May 2025, www.lung.org/blog/ozone-pollution-caused-by-wildfires.
+Reyes Becerra, Natalia. “Ozone Pollution Is Getting Worse and Increased Wildfires May Be to Blame.” *American Lung Association*, American Lung Association, 5 May 2025, [www.lung.org/blog/ozone-pollution-caused-by-wildfires.](http://www.lung.org/blog/ozone-pollution-caused-by-wildfires)
 
-“Wheel of Names.” Wheel of Names, www.wheelofnames.com/. Accessed 4 May 2025.
+“Wheel of Names.” Wheel of Names, [www.wheelofnames.com](http://www.wheelofnames.com) Accessed 4 May 2025.
 
 # **Code Appendix:**
 
